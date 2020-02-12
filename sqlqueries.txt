@@ -39,7 +39,7 @@ INSERT INTO professor_info VALUES ("zzhou", "Zhiguo Zhou", "zzhou@ucmo.edu", "WC
 
 CREATE TABLE COURSE_LIST(
     course_name varchar(255) NOT NULL,
-    course_code varchar(6) NOT NULL,
+    course_code varchar(8) NOT NULL,
     professor_ID varchar(20) NOT NULL,
     FOREIGN KEY (professor_ID) 
 REFERENCES professor_info(professor_ID)
