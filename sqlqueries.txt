@@ -1,5 +1,5 @@
 CREATE TABLE STUDENT_INFO (
-    Student_ID int NOT NULL,
+    Student_ID varchar(9) NOT NULL,
    Student_FName varchar(50) NOT NULL,
     Student_LName varchar(50) NOT NULL,
     Student_Email varchar(17) NOT NULL,
