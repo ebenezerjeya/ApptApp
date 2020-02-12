@@ -12,7 +12,7 @@ public class available_timeController {
     private AvailableTimesRepository availableTimesRepository;
 
     @GetMapping("/times")
-    public @ResponseBody Iterable<available_time> getAllStudents() {
+    public @ResponseBody Iterable<available_time> getAllTimes() {
         return availableTimesRepository.findAll();
     }
 

@@ -1,7 +1,4 @@
 package com.project.appt;
-
-import org.springframework.context.annotation.Primary;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
