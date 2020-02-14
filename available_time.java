@@ -13,7 +13,20 @@ public class available_time {
     private Date date;
     private Boolean available;
     private String professor_ID;
-    
+
+    public available_time(){
+    }
+
+    public available_time(String location, String day, Date start_time, Date end_time, Date date, Boolean available, String professor_ID) {
+        this.available = available;
+        this.date = date;
+        this.end_time = end_time;
+        this.start_time = start_time;
+        this.location = location;
+        this.day = day;
+        this.professor_ID = professor_ID;
+    }
+
     public String getLocation() {
         return location;
     }
