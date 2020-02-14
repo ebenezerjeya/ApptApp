@@ -22,6 +22,13 @@ class ProfessorEditForm extends Component {
     }
 
     componentDidMount() {
+        if (this.props.match.params.id !== 'new') {
+            //const professor = (fetch(`professors/${this.props.match.params.id}`)).json();
+            //this.setState({item:professor});
+
+            fetch(`/professors/${this.props.match.params.id}`)
+                .then(professor => this.setState({item: professor}));
+        }
     }
 
     handleChange(event) {
@@ -37,8 +44,8 @@ class ProfessorEditForm extends Component {
     handleSubmit(event) {
         const {item} = this.state;
 
-        fetch('http://localhost:8080/professors', {
-            method: 'POST',
+        fetch(`http://localhost:8080/professors`, {
+            method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -50,7 +57,7 @@ class ProfessorEditForm extends Component {
 
     render() {
         const {item} = this.state;
-        const title = <h2>Add Group</h2>
+        const title = <h2>{item.id ? 'Edit Group' : 'Add Group'}</h2>;
 
         return (
             <div>
@@ -75,12 +82,12 @@ class ProfessorEditForm extends Component {
                         <FormGroup>
                             <Label for="warr_office">Warrensburg Office Number:</Label>
                             <Input type="text" name="warr_office" id="warr_office"
-                                   value={item.warr_office || null} onChange={this.handleChange}/>
+                                   value={item.warr_office || ''} onChange={this.handleChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label for="mic_office">MIC Office Number:</Label>
                             <Input type="text" name="mic_office" id="mic_office"
-                                   value={item.mic_office || null} onChange={this.handleChange}/>
+                                   value={item.mic_office || ''} onChange={this.handleChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Button type="submit">Save</Button>{' '}
