@@ -1,8 +1,8 @@
 package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class CourseController {
@@ -14,4 +14,24 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
+    @GetMapping("/courses/{id}")
+    public @ResponseBody
+    Optional<Course_List> getCourses(@PathVariable int id) {
+        return courseRepository.findById(id);
+    }
+
+    @PostMapping("/courses")
+    public @ResponseBody void createCourses(@RequestBody Course_List course) {
+        courseRepository.save(course);
+    }
+
+    @PutMapping("/courses/{id}")
+    public @ResponseBody void updateCourses(@RequestBody Course_List course) {
+        courseRepository.save(course);
+    }
+
+    @DeleteMapping("/courses/{id}")
+    public @ResponseBody void deleteCourses(@PathVariable int id) {
+        courseRepository.deleteById(id);
+    }
 }
