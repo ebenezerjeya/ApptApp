@@ -1,11 +1,13 @@
 package com.project.appt;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 @Entity
 public class available_time {
     @Id
+    private Integer available_ID;
     private String location;
     private String day;
     private Date start_time;
@@ -17,7 +19,8 @@ public class available_time {
     public available_time(){
     }
 
-    public available_time(String location, String day, Date start_time, Date end_time, Date date, Boolean available, String professor_ID) {
+    public available_time(Integer available_ID, String location, String day, Date start_time, Date end_time, Date date, Boolean available, String professor_ID) {
+        this.available_ID = available_ID;
         this.available = available;
         this.date = date;
         this.end_time = end_time;
@@ -26,7 +29,12 @@ public class available_time {
         this.day = day;
         this.professor_ID = professor_ID;
     }
-
+    public  Integer getAvailable_ID(){
+        return available_ID;
+    }
+    public void setAvailable_ID(Integer available_ID){
+        this.available_ID = available_ID;
+    }
     public String getLocation() {
         return location;
     }
