@@ -1,9 +1,8 @@
 package com.project.appt;
 
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.web.bind.annotation.*;
-
-        import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -18,7 +17,8 @@ public class ProfessorController {
     }
 
     @GetMapping("/professors/{id}")
-    public @ResponseBody Optional<Professor_Info> getProfessor(@PathVariable String id) {
+    public @ResponseBody
+    Optional<Professor_Info> getProfessor(@PathVariable String id) {
         return professorRepository.findById(id);
     }
 
