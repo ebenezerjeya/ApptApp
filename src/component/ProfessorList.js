@@ -1,6 +1,5 @@
 import React , { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Button } from "react-bootstrap";
 
 class ProfessorList extends Component {
 
@@ -19,7 +18,7 @@ class ProfessorList extends Component {
     componentDidMount() {
         fetch(`http://localhost:8080/professors`)
             .then(response => response.json())
-            .then(data => this.setState({professors: data}));
+            .then(data => this.setState({professors: data}))
     }
 
     remove(id) {
@@ -30,8 +29,9 @@ class ProfessorList extends Component {
                 'Content-Type': 'application/json'
             },
         }).then(() => {
-           let updatedList = [...this.state.professors].filter(i => i.id != id);
+           let updatedList = [...this.state.professors].filter(i => i.id !== id);
            this.setState({professors: updatedList});
+           window.location.reload(false); //reload page after delete
         });
     }
 
@@ -61,14 +61,14 @@ class ProfessorList extends Component {
                                     <td>{professor.professor_email}</td>
                                     <td>{professor.warr_office}</td>
                                     <td>{professor.mic_office}</td>
-                                    <td><Button color="primary" tag={Link} to={"/professors/" + professor.professor_id}>Edit</Button></td>
-                                    <td><Button color="danger" onClick={() => this.remove(professor.professor_id)}>Delete</Button></td>
+                                    <td><Button variant="primary" href={"/professors/" + professor.professor_id}>Edit</Button></td>
+                                    <td><Button variant="danger" onClick={() => this.remove(professor.professor_id)}>Delete</Button></td>
                                 </tr>
                         )
                     }
                     </tbody>
                 </table>
-                <Button color="success" tag={Link} to="/professors/new">Add Group</Button>
+                <Button variant="success" href="/professors/new">Add Professor</Button>
             </div>
         )
     }
