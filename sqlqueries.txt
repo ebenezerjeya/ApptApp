@@ -57,7 +57,7 @@ CREATE TABLE Available_times(
     date DATE NOT NULL,
     available BOOLEAN NOT NULL,
     professor_ID varchar(20) NOT NULL,
-    PRIMARY KEY(appointment_id),
+    PRIMARY KEY(available_id),
     FOREIGN KEY (professor_ID) REFERENCES professor_info(professor_ID)ON DELETE CASCADE,
 
 CONSTRAINT mustStartOnTHIRTYMinuteBoundary CHECK (
