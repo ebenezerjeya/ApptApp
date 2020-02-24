@@ -1,5 +1,7 @@
 package com.project.appt;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.Date;
 @Entity
 public class available_times {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer available_ID;
     private String location;
     private String day;
