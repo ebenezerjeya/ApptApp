@@ -1,0 +1,108 @@
+@media all and (min-width: 480px) {
+    .Register {
+        padding: 5% 0;
+        margin: auto auto;
+        position: center;
+    }
+
+    .Register form {
+        margin: 0 auto;
+        max-width: 520px;
+        padding-top: 20px;
+    }
+
+    .wrapRegister{
+        width: 700px;
+        padding-bottom: 50px;
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
+        -o-box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
+        -ms-box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
+        margin: auto auto;
+    }
+
+    .wrapinput{
+        width: 100%;
+        background-color: #fff;
+        border-radius: 27px;
+        position: relative;
+        z-index: 1;
+        display: block;
+    }
+
+    .registerinput {
+        font-family: Ubuntu-Bold;
+        font-size: 15px;
+        color: #1b3815;
+        line-height: 1.2;
+        position: -ms-device-fixed;
+        display: block;
+        height: 55px;
+        background: #ebebeb;
+        border-radius: 27px;
+        padding: 10px 35px 10px 35px;
+
+    }
+
+    .input1{
+        display: inline-block;
+        width: 250px;
+        margin: 0 10px 0 0;
+    }
+
+    .input2{
+        width: 100%;
+    }
+
+    .registertitle {
+        font-family: JosefinSans-Bold;
+        font-size: 30px;
+        color: #fff;
+        line-height: 1.2;
+        text-align: center;
+
+        display: block;
+
+        width: 100%;
+        top: 0;
+        left: 0;
+        background-color: #57b846;
+        padding-top: 50px;
+        padding-bottom: 35px;
+    }
+
+    .registerbtn {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top : 10px;
+        padding: 0 20px;
+        width: 100%;
+        height: 50px;
+        background-color: #57b846;
+        border-radius: 25px;
+
+        font-family: Ubuntu-Bold;
+        font-size: 15px;
+        color: #fff;
+        line-height: 1.2;
+        text-transform: uppercase;
+
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+
+    .registerbtn:hover {
+        filter: brightness(150%);
+    }
+}
