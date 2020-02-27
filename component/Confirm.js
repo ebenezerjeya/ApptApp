@@ -32,7 +32,8 @@ export class Confirm extends Component {
                 email, 
                 studentID, 
                 purpose, 
-                professor, 
+                professor,
+                course,
                 description, 
                 campus
             }
@@ -106,6 +107,14 @@ export class Confirm extends Component {
                 <Button variant="primary">Edit professor</Button>
             </Card.Body>
             <Card.Body>
+                <Card.Title>Course</Card.Title>
+                <Card.Text>
+                    {course}
+                </Card.Text>
+                <Button variant="primary">Edit course</Button>
+            </Card.Body>
+            <Card.Body>
+
                 <Card.Title>Additional descriptions/notes</Card.Title>
                 <Card.Text>
                     {description}

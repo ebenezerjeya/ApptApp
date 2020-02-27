@@ -17,7 +17,7 @@ class ProfessorList extends Component {
     componentDidMount() {
         fetch(`http://localhost:8080/professors`)
             .then(response => response.json())
-            .then(data => {this.setState({professors: data}); console.log(this.state.professors)})
+            .then(data => {this.setState({professors: data});})
     }
 
     remove(id) {
@@ -35,7 +35,6 @@ class ProfessorList extends Component {
     }
 
     render() {
-        console.log(this.state.professors);
         return (
             <div>
                 <h2>Professors:</h2>
