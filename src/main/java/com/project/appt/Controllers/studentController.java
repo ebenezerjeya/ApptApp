@@ -57,20 +57,24 @@ public class studentController {
 
         if(!student1.isEmpty() && !registerAuth.getError()){
             registerAuth.setError(true);
-            System.out.println("User already exists");
         }
     }
 
     @PostMapping("/student/loginAuth")
     public @ResponseBody void loginCredentials(@RequestBody Credentials credentials) {
-        List<student_info> student= studentService.findStudentById(credentials.getId(), credentials.getPassword());
+        if (credentials.getId().equals("logout")) {
+            loginAuth.setAuth(false);
+        }
+        else {
+            List<student_info> student= studentService.findStudentById(credentials.getId(), credentials.getPassword());
 
-        if (student.isEmpty() && !loginAuth.getError())
-            loginAuth.setError(true);
+            if (student.isEmpty() && !loginAuth.getError())
+                loginAuth.setError(true);
 
-        if (!student.isEmpty()) {
-            loginAuth.setAuth(!student.isEmpty());
-            loginAuth.setError(false);
+            if (!student.isEmpty()) {
+                loginAuth.setAuth(!student.isEmpty());
+                loginAuth.setError(false);
+            }
         }
     }
 
