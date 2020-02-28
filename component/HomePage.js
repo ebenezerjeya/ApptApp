@@ -1,7 +1,23 @@
 import React, { useState } from "react";
 import "../css/HomePage.css"
 
+
 export default function HomePage(props) {
+
+    function logOut() {
+        fetch(`http://localhost:8080/student/loginAuth`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: "logout",
+                password: "",
+            }),
+        })
+    }
+
     return(
         <div className="homeWrapper">
             <div className="sidebar">
@@ -38,6 +54,12 @@ export default function HomePage(props) {
                             <a className="nav-link" href="">
                                 <i className="nc-icon nc-bell-55"></i>
                                 <p>Notifications</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="nav-link" href="/" onClick={logOut}>
+                                <i className="nc-icon nc-bell-55"></i>
+                                <p>Log Out</p>
                             </a>
                         </li>
                     </ul>
