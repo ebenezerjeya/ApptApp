@@ -67,7 +67,7 @@ export default function HomePage(props) {
             </div>
             <div className="body">
                 <p> Name: </p>
-                <p> ID: </p>
+                <p> ID: {sessionStorage.getItem("id").toString()}</p>
             </div>
         </div>
     )
