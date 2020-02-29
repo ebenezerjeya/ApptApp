@@ -6,6 +6,7 @@ import ProfessorList from "./ProfessorList";
 
 export default function Login(props) {
     const [id, setId] = useState("");
+    /*Get student_ID aka session variable*/
     sessionStorage.setItem("id", id);
     const [password, setPassword] = useState("");
     const [auth, setAuth] = useState(false);
