@@ -1,5 +1,6 @@
 package com.project.appt.Repositories;
 
+import com.project.appt.Tables.response_auth;
 import com.project.appt.Tables.student_info;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

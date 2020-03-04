@@ -1,9 +1,11 @@
 package com.project.appt.Controllers;
 
 import com.project.appt.Authentication.Credentials;
-import com.project.appt.Authentication.ResponseAuth;
+import com.project.appt.RepoInterfaces.ResponseAuthRepoInterface;
 import com.project.appt.RepoInterfaces.StudentRepoInterface;
+import com.project.appt.Repositories.ResponseAuthRepository;
 import com.project.appt.Repositories.StudentRepository;
+import com.project.appt.Tables.response_auth;
 import com.project.appt.Tables.student_info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,15 @@ public class studentController {
     @Autowired
     private StudentRepoInterface studentService;
 
-    private ResponseAuth loginAuth = new ResponseAuth(false, false);
-    private ResponseAuth registerAuth = new ResponseAuth(false, false);
+    @Autowired
+    private ResponseAuthRepository responseAuthRepository;
+
+    @Autowired
+    private ResponseAuthRepoInterface responseAuthService;
+
+    // I did this cause idk what else to do lol
+    // 1 = initial, 2 = userNotFound
+    private int errorType = 1;
 
     @GetMapping("/student")
     public @ResponseBody Iterable<student_info> getAllStudents() {
@@ -36,12 +45,30 @@ public class studentController {
     }
 
     @GetMapping("/student/loginAuth")
-    public @ResponseBody ResponseAuth getLoginAuth() {
-        return loginAuth;
+    public @ResponseBody Iterable<response_auth> getLoginAuth() {
+        return responseAuthRepository.findAll();
     }
 
+    @GetMapping("/student/{id}/loginAuth")
+    public @ResponseBody
+    List<response_auth> getStudentLoginAuth(@PathVariable String id) {
+        List<response_auth> response = responseAuthService.findAuthById(id);
+
+        if (response.size() == 0) {
+            if (errorType == 1)
+                response.add(new response_auth(false, false, "notFound"));
+            else {
+                response.add(new response_auth(false, true, "notFound"));
+                errorType = 1;
+            }
+        }
+
+        return response;
+    }
+
+    /*
     @GetMapping("/student/registerAuth")
-    public @ResponseBody ResponseAuth getRegisterAuth() {
+    public @ResponseBody response_auth getRegisterAuth() {
         return registerAuth;
     }
 
@@ -59,22 +86,34 @@ public class studentController {
             registerAuth.setError(true);
         }
     }
+    */
 
-    @PostMapping("/student/loginAuth")
-    public @ResponseBody void loginCredentials(@RequestBody Credentials credentials) {
-        if (credentials.getId().equals("logout")) {
-            loginAuth.setAuth(false);
+    @PostMapping("/student/{id}/loginAuth")
+    public @ResponseBody void loginCredentials(@RequestBody Credentials credentials, @PathVariable String id) {
+        List<response_auth> response = responseAuthService.findAuthById(id);
+
+        // only do stuff if id is present in database
+        if (response.size() != 0) {
+            if (credentials.getId().equals("logout")) {
+                response.get(0).setAuth(false);
+                responseAuthRepository.save(response.get(0));
+            }
+            else {
+                List<student_info> student= studentService.findStudentById(credentials.getId(), credentials.getPassword());
+                if (student.isEmpty() && !response.get(0).getError()) {
+                    response.get(0).setError(true);
+                    responseAuthRepository.save(response.get(0));
+                }
+
+                if (!student.isEmpty()) {
+                    response.get(0).setAuth(true);
+                    response.get(0).setError(false);
+                    responseAuthRepository.save(response.get(0));
+                }
+            }
         }
         else {
-            List<student_info> student= studentService.findStudentById(credentials.getId(), credentials.getPassword());
-
-            if (student.isEmpty() && !loginAuth.getError())
-                loginAuth.setError(true);
-
-            if (!student.isEmpty()) {
-                loginAuth.setAuth(!student.isEmpty());
-                loginAuth.setError(false);
-            }
+            errorType = 2;
         }
     }
 

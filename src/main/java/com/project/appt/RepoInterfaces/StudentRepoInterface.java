@@ -1,5 +1,6 @@
 package com.project.appt.RepoInterfaces;
 
+import com.project.appt.Tables.response_auth;
 import com.project.appt.Tables.student_info;
 
 import java.util.List;
