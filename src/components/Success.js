@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//material-ui theme provider wrapper
 import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
@@ -26,22 +25,17 @@ export class Success extends Component {
 
     render() {
         return ( 
-        <div>
-        <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Student/Professor Appointment Site</Navbar.Brand>
-        <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#courses">Courses</Nav.Link>
-            <Nav.Link href="#ucmNewsFlash">UCM News Flash</Nav.Link>
-        </Nav>
-        <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
-        </Form>
-        </Navbar>
+        <div className="Success">
+            <Navbar bg="dark" variant="dark">
+                <Navbar.Brand href="#home">Appointmeet by UCM</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Nav.Link href="#home">Home</Nav.Link>
+                </Nav>
+            </Navbar>
 
-            <Card style={{ width: '36rem' }}>
-                <Card.Img variant="top" src="https://images.app.goo.gl/GmjJQtX2fgzpQTp57" />
+            <Card style={{ width: '24rem' }}>
+                < Card.Img variant = "top"
+                src = "https://pbs.twimg.com/profile_images/1032375481457242112/G9YEIu26_400x400.jpg" / >
                 <Card.Body>
                     <Card.Title>Appointment Successful!</Card.Title>
                     <Card.Text>
@@ -54,8 +48,8 @@ export class Success extends Component {
                     <ListGroupItem>list group items for any info or stuff we can add</ListGroupItem>
                 </ListGroup>
                 <Card.Body>
-                    <Card.Link href="#">Make a new appointment</Card.Link>
-                    <Card.Link href="#">Another potential link to somewhere</Card.Link>
+                    <Card.Link href="FormUserDetails">Make a new appointment</Card.Link>
+                    <Card.Link href="FormAppointmentDetails">Going to Appointment details section</Card.Link>
                 </Card.Body>
             </Card>
                 

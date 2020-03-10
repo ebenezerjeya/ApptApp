@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails';
 import FormAppointmentDetails from './FormAppointmentDetails';
+import FormTimePicker from './FormTimePicker';
 import Confirm from './Confirm';
 import Success from './Success';
 
 export class UserForm extends Component {
-    state ={
+    state = {
         step: 1,
         //FormUserDetails info
         firstName: '',
@@ -17,6 +18,8 @@ export class UserForm extends Component {
         professor: '',
         description: '',
         campus: '',
+        date: '',
+        time: '',
 
     }
 
@@ -34,7 +37,7 @@ export class UserForm extends Component {
              step
          } = this.state;
          this.setState({
-             step: step - 1
+             step: step-1
          });
      }
 
@@ -49,7 +52,7 @@ export class UserForm extends Component {
     render() {
 
         const {step} = this.state;
-        const {firstName, lastName, email, studentID, purpose, professor, description, campus} = this.state;
+        const {firstName, lastName, email, studentID, purpose, professor, description, campus, date, time} = this.state;
         const values = {
             firstName,
             lastName,
@@ -58,7 +61,9 @@ export class UserForm extends Component {
             purpose,
             professor,
             description, 
-            campus
+            campus,
+            date,
+            time
         }
         
         //need to add props to call the increment step method and handlechange event method
@@ -75,7 +80,7 @@ export class UserForm extends Component {
             
             case 2: 
                 return(
-                    < FormAppointmentDetails
+                    <FormAppointmentDetails
                     nextStep = {this.nextStep}
                     prevStep = {this.prevStep}
                     handleChange = {this.handleChange}
@@ -84,6 +89,15 @@ export class UserForm extends Component {
                 )
             
             case 3:
+                return ( 
+                <FormTimePicker
+                nextStep = {this.nextStep}
+                prevStep = {this.prevStep}
+                handleChange = {this.handleChange}
+                values = {values}
+                />
+            )
+            case 4:
             return ( 
                 <Confirm 
                 nextStep = {this.nextStep}
@@ -92,8 +106,9 @@ export class UserForm extends Component {
                 values = {values}
                 />
             )
-            case 4:
+            case 5: 
                 return <Success/>
+                
                 //no props cause it's an already confirmed page, unless we add features and stuff//
             
         }

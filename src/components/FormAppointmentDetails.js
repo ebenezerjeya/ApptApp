@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//material-ui theme provider wrapper
 import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Navbar, Nav} from "react-bootstrap";
@@ -24,22 +23,17 @@ export class FormAppointmentDetails extends Component {
         //it's something like creating a const variable value to pull out 
         //from values in Userform to use it here like a variable
         const {values, handleChange} = this.props;
+        console.log(handleChange);
 //gonna work on researching up on a dropdown tab thing with different dummy selections of choices
 //probably need to display those choices after linking with DB and spring instead of frontend hardcode
 //for now - dummy
       return (
-      <div>
+      <div className="FormAppointmentDetails">
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Student/Professor Appointment Site</Navbar.Brand>
+        <Navbar.Brand href="#home">Appointmeet by UCM</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#courses">Courses</Nav.Link>
-          <Nav.Link href="#ucmNewsFlash">UCM News Flash</Nav.Link>
         </Nav>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
-        </Form>
       </Navbar>
 
       <br/>
@@ -60,11 +54,11 @@ export class FormAppointmentDetails extends Component {
           Select professor :  
           <br/>
           <select value={this.values} onChange={handleChange('professor')}>
-            <option value="Prof#1">Prof#1</option>
-            <option value="Prof#2">Prof#2</option>
-            <option value="Prof#3">Prof#3</option>
-            <option value="Prof#4">Prof#4</option>
-            <option value="Prof#5">Prof#5</option>
+            <option value="TK">TK</option>
+            <option value="MK">MK</option>
+            <option value="GK">GK</option>
+            <option value="KK">KK</option>
+            <option value="KKK">KKK</option>
           </select>
         </label>
         <br/>
@@ -73,8 +67,8 @@ export class FormAppointmentDetails extends Component {
           Select campus :  
           <br/>
           <select value={this.values} onChange={handleChange('campus') }>
-            <option value="campus#1">Warrensburg</option>
-            <option value="campus#2">Lee's Summit</option>
+            <option value="Warrensburg">Warrensburg</option>
+            <option value="Lee's Summit">Lee's Summit</option>
           </select>
         </label>
 
