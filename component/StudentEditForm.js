@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Container, Form, Button, FormGroup, FormControl } from "react-bootstrap";
-import logout from "./HomePage";
+import logout, {logOut} from "./HomePage";
 
 class StudentEditForm extends Component {
     emptyItem = {
@@ -59,7 +59,7 @@ class StudentEditForm extends Component {
 
         return (
             <div className="homeWrapper">
-                <div className="sidebar">
+                <div className="sidebar position-block">
                     <div className="sidebar-wrapper">
                         <div className="logo">
                             <a href="" className="simple-text">AppointMeet</a>
@@ -79,15 +79,8 @@ class StudentEditForm extends Component {
                             </li>
                             <li>
                                 <a className="nav-link" href="">
-                                    <i className="nc-icon nc-notes"></i>
-                                    <p>My Schedule</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a className="nav-link"
-                                   onClick={()=> window.open("/form", "_blank")}>
                                     <i className="nc-icon nc-pin-3"></i>
-                                    <p>Make Appointment</p>
+                                    <p>Maps</p>
                                 </a>
                             </li>
                             <li>
@@ -97,7 +90,7 @@ class StudentEditForm extends Component {
                                 </a>
                             </li>
                             <li>
-                                <a className="nav-link" href="/" onClick={logout}>
+                                <a className="nav-link" href="/" onClick={logOut}>
                                     <i className="nc-icon nc-bell-55"></i>
                                     <p>Log Out</p>
                                 </a>
@@ -105,9 +98,17 @@ class StudentEditForm extends Component {
                         </ul>
                     </div>
                 </div>
-                <div className="body">
+                <div className="Header-old header-logged-in js-details-container Details position-block f4 py-2 myHeader" role="banner">
+                    <div className="container-xl d-lg-flex flex-items-center p-responsive flex-justify-between">
+                        <div className="d-flex  flex-items-center">
+                        </div>
+                        <div className="d-flex flex-items-center right-0 flex-auto signUpbtn">
+                        </div>
+                    </div>
+                </div>
+                <div className="position-block myBody">
                     <Container>
-                        <h2>Change Password</h2>
+                        <span className="sectionTitles"> Change Password </span>
                         <Form onSubmit={this.handleSubmit}>
                             <FormGroup>
                                 <label>New Password: </label>
@@ -136,8 +137,8 @@ class StudentEditForm extends Component {
                     </Container>
                 </div>
             </div>
-        )
 
+        )
     }
 }
 
