@@ -2,10 +2,12 @@ import React, {useCallback, useEffect, useState } from "react";
 import { Button, FormGroup, FormControl } from "react-bootstrap";
 import { BrowserRouter as Router, Redirect, Switch, Route } from 'react-router-dom'
 import "../css/Login.css";
-import ProfessorList from "./ProfessorList";
+import HomePage from "./HomePage";
 
 export default function Login(props) {
     const [id, setId] = useState("");
+    /*Get student_ID aka session variable*/
+    sessionStorage.setItem("id", id);
     const [password, setPassword] = useState("");
     const [auth, setAuth] = useState(false);
     const [error, setError] = useState(false);
@@ -15,13 +17,14 @@ export default function Login(props) {
     const forceUpdate = useCallback(() => updateState({}), []);
 
     function validateForm() {
-        return password.length > 0 && (id.length === 9);
+        return id.length > 0 && password.length > 0;
     }
 
     function handleSubmit(event) {
         event.preventDefault();
+        const link = "http://localhost:8080/student/" + id + "/loginAuth";
 
-        fetch(`http://localhost:8080/student/loginAuth`, {
+        fetch(link, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -40,7 +43,12 @@ export default function Login(props) {
     // constantly fetch Auth data from the backend
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`http://localhost:8080/student/loginAuth`, {
+            if (id === "")
+                var link = "http://localhost:8080/student/1/loginAuth";
+            else
+                link = "http://localhost:8080/student/" + id + "/loginAuth";
+
+            const res = await fetch(link, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -49,12 +57,15 @@ export default function Login(props) {
             });
             res.json()
                 .then(data => {
-                    setAuth(Object.values(data)[0]);
-                    setError(Object.values(data)[1]);
+                    setAuth((Object.values(data)[0])["auth"]);
+                    setError((Object.values(data)[0])["error"]);
                 })
         }
 
         fetchData();
+
+        // set authentication based on the current auth of the user that's entering
+        sessionStorage.setItem("isAuthenticated", auth.toString());
     });
 
     function displayError() {
@@ -70,77 +81,77 @@ export default function Login(props) {
                         <h3 className="appName">AppointMe!</h3>
                     </div>
                     <div className="d-flex flex-items-center right-0 flex-auto signUpbtn">
-                            <a href="/register"> Sign up </a>
+                        <a href="/register"> Sign up </a>
                     </div>
 
                 </div>
             </header>
             <div className="Login">
                 <div class="d-md-flex flex-items-center gutter-md-spacious wrapIntroLogin">
-                <div className="col-md-7 text-center text-md-left intro">
-                    <h1 className="introTitle"> Made by Students, for Students</h1>
-                    <p> Easy online appointment scheduling application for students and professors </p>
-                </div>
-                <div className="wrapLogin">
-                    <span className="form-title"> Sign In </span>
-                    <p id="Warning" className="Warning">The information provided is incorrect.</p>
-                    <form className="loginForm" onSubmit={handleSubmit}>
-                        <div className="wrapinput" data-validate = "Please enter username">
-                            <FormGroup controlId="id" bsSize="large">
-                                <FormControl
-                                    className="logininput"
-                                    placeholder="Username"
-                                    autoFocus
-                                    type="text"
-                                    value={id}
-                                    onChange={e => setId(e.target.value)}
-                                    required
-                                />
-                            </FormGroup>
-                        </div>
+                    <div className="col-md-7 text-center text-md-left intro">
+                        <h1 className="introTitle"> Made by Students, for Students</h1>
+                        <p> Easy online appointment scheduling application for students and professors </p>
+                    </div>
+                    <div className="wrapLogin">
+                        <span className="form-title"> Sign In </span>
+                        <p id="Warning" className="Warning">The information provided is incorrect.</p>
+                        <form className="loginForm" onSubmit={handleSubmit}>
+                            <div className="wrapinput" data-validate = "Please enter username">
+                                <FormGroup controlId="id" bsSize="large">
+                                    <FormControl
+                                        className="logininput"
+                                        placeholder="Username"
+                                        autoFocus
+                                        type="text"
+                                        value={id}
+                                        onChange={e => setId(e.target.value)}
+                                        required
+                                    />
+                                </FormGroup>
+                            </div>
 
-                        <div className="wrapinput" data-validate = " ">
-                            <FormGroup controlId="password" bsSize="large" >
-                                <FormControl
-                                    className="logininput"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    type="password"
-                                    required
-                                />
-                            </FormGroup>
-                        </div>
+                            <div className="wrapinput" data-validate = " ">
+                                <FormGroup controlId="password" bsSize="large" >
+                                    <FormControl
+                                        className="logininput"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        type="password"
+                                        required
+                                    />
+                                </FormGroup>
+                            </div>
 
-                        <div className="text-right p-t-13 p-b-23">
+                            <div className="text-right p-t-13 p-b-23">
                             <span className="txt1">
                                 Forgot&nbsp;
                             </span>
 
-                            <a href="#" className="txt2">
-                                Username / Password?
-                            </a>
-                        </div>
+                                <a href="#" className="txt2">
+                                    Username / Password?
+                                </a>
+                            </div>
 
-                        <div>
-                            <Button block bsSize="large" className="loginbtn" disabled={!validateForm()} type="submit">
-                                Log In
-                            </Button>
-                        </div>
+                            <div>
+                                <Button block bsSize="large" className="loginbtn" disabled={!validateForm()} type="submit">
+                                    Log In
+                                </Button>
+                            </div>
 
-                        <div className="signup">
+                            <div className="signup">
                             <span className="txt1 p-b-9">
                                 Don’t have an account?&nbsp;
                             </span>
-                            <br></br>
-                            <a href="/register" className="txt3">
-                                Sign up now
-                            </a>
-                        </div>
+                                <br></br>
+                                <a href="/register" className="txt3">
+                                    Sign up now
+                                </a>
+                            </div>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>;
 
@@ -150,7 +161,7 @@ export default function Login(props) {
                 {error ? displayError() : null}
                 {auth ? <Redirect to="/home"/> : form()}
                 <Switch>
-                    <Route path="/home" exact component={ProfessorList}/>
+                    <Route path="/home" exact component={HomePage}/>
                 </Switch>
             </Router>
         </>

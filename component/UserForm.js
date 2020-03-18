@@ -16,13 +16,12 @@ export class UserForm extends Component {
         purpose: '',
         professorList: [], // new line
         professor: '',
-        courseList: [],
+        courseList: [{course_id: 0, course_code: "Select Course"}],
         course: '',
-        description: '',
+        campusList: [{id: 0, name: "Select Campus"}],
         campus: '',
-
+        description: ''
     };
-
 
     //Proceed to the next step method with changing states with iterations
     nextStep = () => {
@@ -30,7 +29,7 @@ export class UserForm extends Component {
         this.setState({
             step: step+1
         });
-    }
+    };
 
      //Go back to previous step method
      prevStep = () => {
@@ -40,13 +39,46 @@ export class UserForm extends Component {
          this.setState({
              step: step - 1
          });
-     }
+     };
 
-     //Handle fieldchange in terms of input box, changing when a new step advances or cancels
-     //arrow function of react with event parameter
-     handleChange = input => e => {
-         this.setState ({[input]: e.target.value});
-     }
+    //Handle fieldchange in terms of input box, changing when a new step advances or cancels
+    //arrow function of react with event parameter
+    handleChange = input => e => {
+        this.setState({[input]: e.target.value});
+    };
+
+
+
+     getCoursesAndCampus = () => () => {
+         // find prof based on the name, then set the professor_id and courses
+         var prof = this.state.professorList.find(o => o.professor_name === this.state.professor);
+         if (prof != null) {
+             var professor_id = prof.professor_id;
+         }
+
+         const courseLink = "http://localhost:8080/courses_prof/" + professor_id;
+         const campusLink = "http://localhost:8080/professors/" + professor_id;
+
+         fetch(courseLink)
+             .then(response => response.json())
+             .then(data => {
+                 this.setState({courseList: [{course_id: 0, course_code: "Select Course"}].concat(data)});
+             });
+
+         fetch(campusLink)
+             .then(response => response.json())
+             .then(data => {
+                 if (data != null) {
+                     if (data.warr_office != null && data.mic_office != null)
+                         this.setState({campusList: [{id: 0, name: "Select Campus"}].concat([{id: 1, name: "Warrensburg"}])})
+                             .concat([{id: 2, name: "Lee's Summit"}]);
+                     else if (data.warr_office != null)
+                         this.setState({campusList: [{id: 0, name: "Select Campus"}].concat([{id: 1, name: "Warrensburg"}])});
+                     else if (data.mic_office != null)
+                         this.setState({campusList: [{id: 0, name: "Select Campus"}].concat([{id: 1, name: "Lee's Summit"}])});
+                 }
+             });
+     };
 
     componentDidMount() {
         fetch(`http://localhost:8080/professors`)
@@ -60,9 +92,8 @@ export class UserForm extends Component {
     
      //need to determine what step we are on to determine which component to display
     render() {
-
         const {step} = this.state;
-        const {firstName, lastName, email, studentID, purpose, professorList, professor, courseList, course, description, campus} = this.state;
+        const {firstName, lastName, email, studentID, purpose, professorList, professor, courseList, course, campusList, campus, description} = this.state;
         const values = {
             firstName,
             lastName,
@@ -73,9 +104,10 @@ export class UserForm extends Component {
             professor,
             courseList,
             course,
-            description, 
-            campus
-        }
+            campusList,
+            campus,
+            description
+        };
         
         //need to add props to call the increment step method and handlechange event method
         //handleChange={this.handleChange}
@@ -95,6 +127,7 @@ export class UserForm extends Component {
                     nextStep = {this.nextStep}
                     prevStep = {this.prevStep}
                     handleChange = {this.handleChange}
+                    getCoursesAndCampus = {this.getCoursesAndCampus}
                     values = {values}
                     />
                 )

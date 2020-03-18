@@ -16,26 +16,13 @@ export class FormAppointmentDetails extends Component {
         this.props.prevStep();
     };
 
-    //section for getting information from the backend
-    getCourses(change, professor_id) {
-        this.props.handleChange(change);
-        console.log(professor_id);
-        const link = "http://localhost:8080/courses_prof/" + professor_id;
-        fetch(link)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({courseList: data});
-                console.log(data);
-            });
-    }
-
     //notes - A common pattern in React is for a component to return multiple elements. 
     //Fragments let you group a list of children without adding extra nodes to the DOM.
 
     render() {
         //it's something like creating a const variable value to pull out 
         //from values in Userform to use it here like a variable
-        const {values, handleChange} = this.props;
+        const {values, handleChange, getCoursesAndCampus} = this.props;
 
     //gonna work on researching up on a dropdown tab thing with different dummy selections of choices
     //probably need to display those choices after linking with DB and spring instead of frontend hardcode
@@ -70,9 +57,9 @@ export class FormAppointmentDetails extends Component {
       <br/>
       
         <label>
-          Select professor :  
+          Select professor :
           <br/>
-          <select value={this.values} onChange={handleChange('professor')}>
+          <select value={this.values} onInput={handleChange('professor')} onChange={getCoursesAndCampus()}>
               {values.professorList.map((prof) =>
                   <option key={prof.professor_id}>{prof.professor_name}</option>
               )}
@@ -83,20 +70,21 @@ export class FormAppointmentDetails extends Component {
           <label>
               Select Course :
               <br/>
-              <select value={this.values} onChange={this.getCourses('course', values.professor)}>
-                  {values.professorList.map((prof) =>
-                      <option key={prof.professor_id} value={prof.value}>{prof.professor_name}</option>
+              <select value={this.values} onChange={handleChange('course')}>
+                  {values.courseList.map((course) =>
+                      <option key={course.course_id}>{course.course_code} {course.course_name}</option>
                   )}
               </select>
           </label>
           <br/>
 
         <label>
-          Select campus :  
+          Select campus:
           <br/>
-          <select value={this.values} onChange={handleChange('campus') }>
-            <option value="campus#1">Warrensburg</option>
-            <option value="campus#2">Lee's Summit</option>
+          <select value={this.values} onChange={handleChange('campus')}>
+              {values.campusList.map((campus) =>
+                  <option key={campus.id}>{campus.name}</option>
+              )}
           </select>
         </label>
 
