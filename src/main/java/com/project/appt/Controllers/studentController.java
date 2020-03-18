@@ -29,6 +29,8 @@ public class studentController {
     @Autowired
     private ResponseAuthRepoInterface responseAuthService;
 
+    private response_auth registerAuth = new response_auth(false, false, "register");
+
     // I did this cause idk what else to do lol
     // 1 = initial, 2 = userNotFound
     private int errorType = 1;
@@ -53,6 +55,8 @@ public class studentController {
     public @ResponseBody
     List<response_auth> getStudentLoginAuth(@PathVariable String id) {
         List<response_auth> response = responseAuthService.findAuthById(id);
+        registerAuth.setAuth(false);
+        registerAuth.setError(false);
 
         if (response.size() == 0) {
             if (errorType == 1)
@@ -66,7 +70,7 @@ public class studentController {
         return response;
     }
 
-    /*
+
     @GetMapping("/student/registerAuth")
     public @ResponseBody response_auth getRegisterAuth() {
         return registerAuth;
@@ -80,13 +84,14 @@ public class studentController {
             registerAuth.setAuth(true);
             registerAuth.setError(false);
             studentRepository.save(student);
+            responseAuthRepository.save(new response_auth(false, false, student.getStudent_id()));
         }
 
         if(!student1.isEmpty() && !registerAuth.getError()){
             registerAuth.setError(true);
         }
     }
-    */
+
 
     @PostMapping("/student/{id}/loginAuth")
     public @ResponseBody void loginCredentials(@RequestBody Credentials credentials, @PathVariable String id) {
@@ -117,8 +122,11 @@ public class studentController {
         }
     }
 
-    @PutMapping("/student/{id}")
-    public @ResponseBody void updateStudent(@RequestBody student_info student) {
+    // update password
+    @PutMapping("/student")
+    public @ResponseBody void updateStudent(@RequestBody Credentials credentials) {
+        student_info student = studentRepository.findById(credentials.getId()).get();
+        student.setStudent_password(credentials.getPassword());
         studentRepository.save(student);
     }
 

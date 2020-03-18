@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class response_auth {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int auth_id;
     private Boolean auth;
     private Boolean error;
