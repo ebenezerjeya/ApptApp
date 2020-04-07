@@ -56,8 +56,8 @@ export default function Register(props) {
             });
             res.json()
                 .then(data => {
-                    setAuth(Object.values(data)[0]);
-                    setError(Object.values(data)[1]);
+                    setAuth(Object.values(data)[1]);
+                    setError(Object.values(data)[2]);
                 })
         }
 

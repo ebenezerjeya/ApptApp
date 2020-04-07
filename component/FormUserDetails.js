@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//material-ui theme provider wrapper
 import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
@@ -19,12 +20,18 @@ export class FormUserDetails extends Component {
         const {values, handleChange} = this.props;
        
         return (
-        <div className="FormUserDetails">
+        <div>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Appointmeet by UCM</Navbar.Brand>
+          <Navbar.Brand href="#home">Student/Professor Appointment Site</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#courses">Courses</Nav.Link>
+            <Nav.Link href="#ucmNewsFlash">UCM News Flash</Nav.Link>
           </Nav>
+          <Form inline>
+            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+            <Button variant="outline-info">Search</Button>
+          </Form>
         </Navbar>
 
         <br/>
@@ -77,3 +84,44 @@ const styles = {
 
 export default FormUserDetails
 
+
+/*
+  <
+  Form.Group controlId = "lastName" >
+  <
+  Form.Label > lastName < /Form.Label> <
+  Form.Control type = "lastName"
+placeholder = "Enter your last name" / >
+  <
+  /Form.Group>
+
+  <
+  Form.Group controlId = "email" >
+  <
+  Form.Label > email < /Form.Label> <
+  Form.Control type = "email"
+placeholder = "Enter your email" / >
+  <
+  Form.Text className = "text-muted" >
+  PLease use your UCMO email. <
+  /Form.Text> <
+  /Form.Group>
+
+  <
+  Form.Group controlId = "studentID" >
+  <
+  Form.Label > studentID < /Form.Label> <
+  Form.Control type = "studentID"
+placeholder = "Enter your 700#" / >
+  <
+  Form.Text className = "text-muted" >
+  700#
+for scanning your UCMO email contents
+for any torrented ePub textbooks. <
+  /Form.Text> <
+  /Form.Group> <
+  Button variant = "primary"
+type = "submit" >
+  Submit <
+  /Button>
+*/

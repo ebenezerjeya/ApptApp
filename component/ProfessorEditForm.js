@@ -84,7 +84,7 @@ class ProfessorEditForm extends Component {
                                    value={item.mic_office || ''} onChange={this.handleChange}/>
                         </FormGroup>
                         <FormGroup>
-                            <Button type="submit">Save</Button>{' '}
+                            <Button type="submit">Save</Button>
                             <Button href="/professors">Cancel</Button>
                         </FormGroup>
                     </Form>
