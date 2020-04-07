@@ -1,16 +1,18 @@
 .sidebar,
+
 body>.navbar-collapse {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 260px;
+    max-width: 250px;
     display: block;
     z-index: 1;
     color: #fff;
     font-weight: 200;
     background-size: cover;
     background-position: center center;
+
 }
 
 .sidebar .sidebar-wrapper,
@@ -352,6 +354,57 @@ body>.navbar-collapse[data-color="purple"]:after {
     background-size: 150% 150%;
 }
 
-.body{
-    margin-left: 400px;
+.myHeader{
+    background-color: #24292e;
+    color: hsla(0,0%,100%,.7);
+    font-family: BebasNeue-Bold;
+    height: 60px;
+}
+
+.myBody{
+    padding: 50px;
+    max-width: 100%;
+    margin-left: 260px;
+}
+
+.mySchedule{
+    width: 100%;
+    min-height: 400px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 20px;
+}
+
+.sectionTitles{
+    font-family: JosefinSans-Bold;
+    font-size: 30px;
+    color: #24292e;
+    line-height: 1.2;
+
+    margin-left: 20px;
+}
+
+.apptBtn{
+    float: right;
+    font-size: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 45px;
+    background-color: #e95e43;
+    border-radius: 25px;
+    padding: 5px 20px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.apptBtn:hover {
+    filter: brightness(150%);
+    cursor: pointer;
 }
