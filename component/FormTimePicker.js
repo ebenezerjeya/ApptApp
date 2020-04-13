@@ -5,9 +5,9 @@ import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
 //import TimePicker from 'react-bootstrap-time-picker';
 
 
-
 export class FormTimePicker extends Component {
     //continue for event parameter to advance steps
+
     continue = e => {
         e.preventDefault();
         this.props.nextStep();
@@ -21,13 +21,10 @@ export class FormTimePicker extends Component {
 //notes - A common pattern in React is for a component to return multiple elements. 
 //Fragments let you group a list of children without adding extra nodes to the DOM.
 
-
-
     render() {
         //it's something like creating a const variable value to pull out 
         //from values in Userform to use it here like a variable
         const {values, handleChange, getStartTimes} = this.props;
-        console.log(handleChange);
 
         return (
             <div className="FormTimePicker">
@@ -50,7 +47,7 @@ export class FormTimePicker extends Component {
                 <br/>
                 <label>Select Appointment Time:
                     <br/>
-                    <select value={this.values} onInput={handleChange('available_times')} >
+                    <select value={this.values} onInput={handleChange('time')}>
                         {values.availableList.map((a_t) =>
                             <option key={a_t.professor_id}>{a_t.start_time}</option>
                         )}

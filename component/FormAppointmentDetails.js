@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Navbar, Nav} from "react-bootstrap";
+import "../css/Form.css";
 
 export class FormAppointmentDetails extends Component {
     //continue for event parameter to advance steps
@@ -22,7 +23,7 @@ export class FormAppointmentDetails extends Component {
     render() {
         //it's something like creating a const variable value to pull out 
         //from values in Userform to use it here like a variable
-        const {values, handleChange, getCoursesAndCampus} = this.props;
+        const {values, handleChange, getCoursesAndCampus, validateForm} = this.props;
 
     //gonna work on researching up on a dropdown tab thing with different dummy selections of choices
     //probably need to display those choices after linking with DB and spring instead of frontend hardcode
@@ -47,25 +48,26 @@ export class FormAppointmentDetails extends Component {
         Select your purpose of appointment :  
         <br/>
           <select value={this.values} onChange={handleChange('purpose')}>
-              <option value="Purpose#1">Homework Help</option>
-              <option value="Purpose#2">Advising</option>
-              <option value="Purpose#3">Discussion</option>
-              <option value="Purpose#4">Other</option>
+              <option value="Purpose">Select Purpose</option>
+              <option value="Homework Help">Homework Help</option>
+              <option value="Advising">Advising</option>
+              <option value="Discussion">Discussion</option>
+              <option value="Other">Other</option>
           </select>
       </label>
-      <br/>
-      
+
+      <div id="professor" class="formDiv">
         <label>
           Select professor :
           <br/>
-          <select value={this.values} onInput={handleChange('professor')} onChange={getCoursesAndCampus()}>
+          <select id="professor" value={this.values} onInput={handleChange('professor')} onChange={getCoursesAndCampus()}>
               {values.professorList.map((prof) =>
                   <option key={prof.professor_id}>{prof.professor_name}</option>
               )}
           </select>
         </label>
-        <br/>
-
+      </div>
+        <div id="course" className="formDiv">
           <label>
               Select Course :
               <br/>
@@ -75,8 +77,8 @@ export class FormAppointmentDetails extends Component {
                   )}
               </select>
           </label>
-          <br/>
-
+        </div>
+          <div id="campus" className="formDiv">
         <label>
           Select campus:
           <br/>
@@ -86,7 +88,9 @@ export class FormAppointmentDetails extends Component {
               )}
           </select>
         </label>
+          </div>
 
+          <div id="addNotes" className="formDiv">
         <Form.Group controlId = "description" >
           <Form.Label > Additional descriptions / Notes </Form.Label> 
           <Form.Control type = "description" placeholder = "Additional Description / Notes" 
@@ -95,16 +99,14 @@ export class FormAppointmentDetails extends Component {
             Describe any potential details or pre Appointment information that could be handy for professors.
           </Form.Text>
         </Form.Group>
+          </div>
+      <br/>
 
-        <br/>
-
-        <Button variant="primary" primary={false} type="submit" onChange="this.back" onClick={this.back}>
-          Back
-        </Button>{' '}
-
-        <Button variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue}>
+      <div id="continueButton" className="formDiv">
+        <Button variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue} disabled={!validateForm}>
           Continue
         </Button>
+      </div>
     
       </div>
       ); //react works when everytime textfield changes, its gonna fire off an event 

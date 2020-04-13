@@ -19,6 +19,11 @@ export class Confirm extends Component {
         e.preventDefault();
         this.props.prevStep();
     };
+
+    backToFirst = e => {
+        e.preventDefault();
+        this.props.backToFirstStep();
+    }
     //notes - A common pattern in React is for a component to return multiple elements. 
     //Fragments let you group a list of children without adding extra nodes to the DOM.
 
@@ -27,15 +32,17 @@ export class Confirm extends Component {
         //from values in Userform to use it here like a variable
         const { 
             values: {
-                firstName, 
-                lastName, 
+                firstName,
+                lastName,
                 email, 
                 studentID, 
                 purpose, 
                 professor,
                 course,
-                description, 
-                campus
+                campus,
+                description,
+                date,
+                time
             }
         } = this.props;
 
@@ -62,56 +69,48 @@ export class Confirm extends Component {
                 <Card.Text>
                     {firstName}
                 </Card.Text>
-                <Button variant="primary">Edit first name</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Last Name</Card.Title>
                 <Card.Text>
                     {lastName}
                 </Card.Text>
-                <Button variant="primary">Edit last name</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Email</Card.Title>
                 <Card.Text>
                     {email}
                 </Card.Text>
-                <Button variant="primary">Edit email</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Student ID</Card.Title>
                 <Card.Text>
                     {studentID}
                 </Card.Text>
-                <Button variant="primary">Edit 700#</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Purpose of Appointment</Card.Title>
                 <Card.Text>
                     {purpose}
                 </Card.Text>
-                <Button variant="primary">Edit purpose</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Campus</Card.Title>
                 <Card.Text>
                     {campus}
                 </Card.Text>
-                <Button variant="primary">Edit campus</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Professor</Card.Title>
                 <Card.Text>
                     {professor}
                 </Card.Text>
-                <Button variant="primary">Edit professor</Button>
             </Card.Body>
             <Card.Body>
                 <Card.Title>Course</Card.Title>
                 <Card.Text>
                     {course}
                 </Card.Text>
-                <Button variant="primary">Edit course</Button>
             </Card.Body>
             <Card.Body>
 
@@ -119,9 +118,23 @@ export class Confirm extends Component {
                 <Card.Text>
                     {description}
                 </Card.Text>
-                <Button variant="primary">Edit description</Button>
             </Card.Body>
-           
+            <Card.Body>
+                <Card.Title>Date</Card.Title>
+                <Card.Text>
+                    {date}
+                </Card.Text>
+            </Card.Body>
+
+            <Card.Body>
+                <Card.Title>Time</Card.Title>
+                <Card.Text>
+                    {time}
+                </Card.Text>
+                <Button variant="primary" onClick={this.backToFirst} >Edit appointment</Button>
+            </Card.Body>
+
+
         </Card>
         <br/>
         <br/>
