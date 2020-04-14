@@ -13,6 +13,14 @@ public class student_info {
 
     public student_info() {}
 
+    public student_info(String student_id, String student_fname, String student_lname, String student_email, String student_password) {
+        this.student_id = student_id;
+        this.student_fname = student_fname;
+        this.student_lname = student_lname;
+        this.student_email = student_email;
+        this.student_password = student_password;
+    }
+
     public student_info(String id) {
         this.student_id = id;
     }

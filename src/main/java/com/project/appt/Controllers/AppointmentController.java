@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class AppointmentController {
     @Autowired
@@ -24,7 +25,10 @@ public class AppointmentController {
 
     @PostMapping("/appointment")
     public @ResponseBody void createAppointment(@RequestBody Appointment appointment) {
+        appointment.setAppointment_date(new java.sql.Date((appointment.getAppointment_date().getTime()+24*60*60*1000)));
         appointmentRepository.save(appointment);
+
+        System.out.println(appointment.getProfessor_Email());
     }
 
     @PutMapping("/appointment/{id}")

@@ -1,8 +1,16 @@
 package com.project.appt.Controllers;
+import com.project.appt.RepoInterfaces.AvailableTimesRepoInterface;
 import com.project.appt.Repositories.AvailableTimesRepository;
 import com.project.appt.Tables.available_times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -11,6 +19,9 @@ public class Available_timesController {
 
     @Autowired
     private AvailableTimesRepository availableTimesRepository;
+
+    @Autowired
+    private AvailableTimesRepoInterface availableService;
 
     @GetMapping("/available_times")
     public @ResponseBody Iterable<available_times> getAllTimes() {
@@ -38,5 +49,15 @@ public class Available_timesController {
         availableTimesRepository.deleteById(available_ID);
     }
 
+    @GetMapping("/available_timesbydate/{id}/{date}")
+    public  @ResponseBody Iterable<available_times> getAvailableTimesByDate(@PathVariable String id, @PathVariable String date){
+
+        Date convertedDate = Date.valueOf(date);
+        //List<available_times> Available_times = availableService.findavailable_timesByDate(id, convertedDate);
+        return availableService.findavailable_timesByDate(id, convertedDate);
+
+    }
+
+    
 
 }

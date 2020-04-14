@@ -38,7 +38,7 @@ public class Appointment {
     }
 
     public void setProfessor_Email(String professor_Email) {
-        Professor_Email = professor_Email;
+        this.Professor_Email = professor_Email;
     }
 
     public String getStudent_Email() {
@@ -46,7 +46,7 @@ public class Appointment {
     }
 
     public void setStudent_Email(String student_Email) {
-        Student_Email = student_Email;
+        this.Student_Email = student_Email;
     }
 
     public String getCourse_code() {

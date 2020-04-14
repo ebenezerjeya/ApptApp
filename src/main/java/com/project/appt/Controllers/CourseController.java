@@ -27,6 +27,11 @@ public class CourseController {
         return courseRepository.findById(id);
     }
 
+    @GetMapping("/courses_prof/{professor_id}")
+    public @ResponseBody Iterable<Course_List> getCoursesByProfessor(@PathVariable String professor_id) {
+        return courseRepoInterface.findCourseByProfessor(professor_id);
+    }
+
     @PostMapping("/courses")
     public @ResponseBody void createCourses(@RequestBody Course_List course) {
         courseRepository.save(course);
@@ -42,8 +47,5 @@ public class CourseController {
         courseRepository.deleteById(id);
     }
 
-    @GetMapping("/courses_prof/{professor_id}")
-    public @ResponseBody Iterable<Course_List> getCoursesByProfessor(@PathVariable String professor_id) {
-        return courseRepoInterface.findCourseByProfessor(professor_id);
-    }
+
 }
