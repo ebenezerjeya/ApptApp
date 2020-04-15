@@ -1,0 +1,141 @@
+package com.project.appt.Controllers;
+
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import com.project.appt.Authentication.Credentials;
+import com.project.appt.RepoInterfaces.ResponseAuthRepoInterface;
+import com.project.appt.RepoInterfaces.StudentRepoInterface;
+import com.project.appt.Repositories.ResponseAuthRepository;
+import com.project.appt.Repositories.StudentRepository;
+import com.project.appt.Tables.response_auth;
+import com.project.appt.Tables.student_info;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+public class studentController {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private StudentRepoInterface studentService;
+
+    @Autowired
+    private ResponseAuthRepository responseAuthRepository;
+
+    @Autowired
+    private ResponseAuthRepoInterface responseAuthService;
+
+    private response_auth registerAuth = new response_auth(false, false, "register");
+
+    // I did this cause idk what else to do lol
+    // 1 = initial, 2 = userNotFound
+    private int errorType = 1;
+
+    @GetMapping("/student")
+    public @ResponseBody Iterable<student_info> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    @GetMapping("/student/{id}")
+    public @ResponseBody
+    Optional<student_info> getStudent(@PathVariable String id) {
+        return studentRepository.findById(id);
+    }
+
+    @GetMapping("/student/loginAuth")
+    public @ResponseBody Iterable<response_auth> getLoginAuth() {
+        return responseAuthRepository.findAll();
+    }
+
+    @GetMapping("/student/{id}/loginAuth")
+    public @ResponseBody
+    List<response_auth> getStudentLoginAuth(@PathVariable String id) {
+        List<response_auth> response = responseAuthService.findAuthById(id);
+        registerAuth.setAuth(false);
+        registerAuth.setError(false);
+
+        if (response.size() == 0) {
+            if (errorType == 1)
+                response.add(new response_auth(false, false, "notFound"));
+            else {
+                response.add(new response_auth(false, true, "notFound"));
+                errorType = 1;
+            }
+        }
+
+        return response;
+    }
+
+
+    @GetMapping("/student/registerAuth")
+    public @ResponseBody response_auth getRegisterAuth() {
+        return registerAuth;
+    }
+
+    @PostMapping("/student/registerAuth")
+    public @ResponseBody void createStudent(@RequestBody student_info student) {
+        //check student.getId
+        List<student_info> student1 = studentService.findDuplicateStudentID(student.getStudent_id());
+        if(student1.isEmpty()) {
+            registerAuth.setAuth(true);
+            registerAuth.setError(false);
+            student.setStudent_password(BCrypt.hashpw(student.getStudent_password(), BCrypt.gensalt(12)));
+            studentRepository.save(student);
+            responseAuthRepository.save(new response_auth(false, false, student.getStudent_id()));
+        }
+
+        if(!student1.isEmpty() && !registerAuth.getError()){
+            registerAuth.setError(true);
+        }
+    }
+
+
+    @PostMapping("/student/{id}/loginAuth")
+    public @ResponseBody void loginCredentials(@RequestBody Credentials credentials, @PathVariable String id) {
+        List<response_auth> response = responseAuthService.findAuthById(id);
+
+        // only do stuff if id is present in database
+        if (response.size() != 0) {
+            if (credentials.getId().equals("logout")) {
+                response.get(0).setAuth(false);
+                responseAuthRepository.save(response.get(0));
+            }
+            else {
+                boolean matched = false;
+                List<student_info> student= studentService.findStudentById(credentials.getId());
+                if(!student.isEmpty())
+                    matched = BCrypt.checkpw(credentials.getPassword(), student.get(0).getStudent_password());
+                if (student.isEmpty() && !response.get(0).getError() || !matched) {
+                    response.get(0).setError(true);
+                    responseAuthRepository.save(response.get(0));
+                }
+
+                if (!student.isEmpty() && matched) {
+                    response.get(0).setAuth(true);
+                    response.get(0).setError(false);
+                    responseAuthRepository.save(response.get(0));
+                }
+            }
+        }
+        else {
+            errorType = 2;
+        }
+    }
+    // update password
+    @PutMapping("/student")
+    public @ResponseBody void updateStudent(@RequestBody Credentials credentials) {
+        student_info student = studentRepository.findById(credentials.getId()).get();
+        student.setStudent_password(credentials.getPassword());
+        studentRepository.save(student);
+    }
+
+    @DeleteMapping("/student/{id}")
+    public @ResponseBody void deleteStudent(@PathVariable String id) {
+        studentRepository.deleteById(id);
+    }
+}
