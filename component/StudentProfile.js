@@ -79,7 +79,6 @@ class StudentProfile extends Component {
                     <label>ID: {this.state.student_id}</label><br/>
                     <label>Name: {this.state.student_fname} {this.state.student_lname}</label><br/>
                     <label>Email: {this.state.student_email}</label><br/>
-                    <label>Password: {this.state.student_password}</label><br/>
                     </p>
                     <Button variant="primary" href="/home/profile/edit">Change password</Button>
                 </div>

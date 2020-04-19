@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "../css/HomePage.css"
 
@@ -25,8 +25,8 @@ export default function HomePage(props) {
     const [appointments, setAppointments] = useState({
         appointments: [],
         appointment_id: null,
-        Professor_Email: null,
-        Student_Email: null,
+        professor_Email: null,
+        student_Email: null,
         course_code: null,
         purpose: null,
         office: null,
@@ -37,28 +37,63 @@ export default function HomePage(props) {
         student_lname: null,
         sent: null,
         appointment_date: null,
+        professor_name: null,
+    });
+
+    const [professorList, setProfessorList] = useState({
+        professorList: [],
+        professor_id: null,
+        professor_name: null,
+        professor_email: null,
+        warr_office: null,
+        mic_office: null,
     });
 
     useEffect(() => {
        fetchData();
+       fetchProfessors();
     });
+
+    async function fetchProfessors() {
+        fetch(`http://localhost:8080/professors`)
+            .then(response => response.json())
+            .then(data => {
+                setProfessorList(data);
+            });
+    }
 
     async function fetchData() {
         const link = "http://localhost:8080/appointment/" + sessionStorage.getItem("id").toString();
-        console.log("This method is called.");
 
         const res = await fetch(link);
         res.json()
             .then(data => {
-                console.log("did we get here?");
-                if (data == null)
+                if (data == null || data.length === 0)
                     setApptExist(false);
                 else {
                     setApptExist(true);
                     setAppointments(data);
                 }
+            })
+    }
 
-            });
+    function getProfName(email) {
+        for (let step = 0; step < professorList.length; step++) {
+            if (Object.values(professorList[step])[2] === email)
+                return Object.values(professorList[step])[1];
+        }
+    }
+
+    function deleteAppointment(id) {
+        const link = "http://localhost:8080/appointment/" + id;
+
+        fetch(link, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
     }
 
     // display when no appointments exist
@@ -70,20 +105,21 @@ export default function HomePage(props) {
     // display appointments
     const showAppt = () =>
         <div>
-            <p>
+            <div>
                 {
                     Array.isArray(appointments) && appointments.map(appt =>
-                        <tr key={appt.appointment_id}>
-                            <td>{appt.course_code}</td>
-                            <td>{appt.purpose}</td>
-                            <td>{appt.office}</td>
-                            <td>{appt.appointment_date}</td>
-                            <td>{appt.start_time}</td>
-                            <td>{appt.end_time}</td>
-                        </tr>
+                        <p key={appt.appointment_id}>
+                            <p>Course: {appt.course_code}</p>
+                            <p>Office: {appt.office}</p>
+                            <p>Date: {appt.appointment_date}</p>
+                            <p>Time: {appt.start_time} - {appt.end_time}</p>
+                            <p>Professor: {getProfName(appt.professor_Email)}</p>
+                            <Button type="button" onClick={() => {deleteAppointment(appt.appointment_id)}}>Cancel Appointment</Button>
+                            <p>-----------------------------------------------------</p>
+                        </p>
                     )
                 }
-            </p>
+            </div>
         </div>;
 
     return(
