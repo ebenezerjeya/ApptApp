@@ -16,8 +16,8 @@ public class StudentService implements StudentRepoInterface {
     private StudentRepository studentRepository;
 
     @Override
-    public List<student_info> findStudentById(String id, String password){
-        return studentRepository.findStudentById(id, password);
+    public List<student_info> findStudentById(String id){
+        return studentRepository.findStudentById(id);
     }
 
     @Override
