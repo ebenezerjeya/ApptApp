@@ -18,4 +18,9 @@ public class AppointmentServices implements AppointmentRepoInterface {
     public List<Appointment> findAppointmentByStudentEmail(String email) {
         return appointmentRepository.findAppointmentByStudentEmail(email);
     }
+
+    @Override
+    public List<Appointment> findAppointmentByProfessorEmail(String email) {
+        return appointmentRepository.findAppointmentByProfessorEmail(email);
+    }
 }

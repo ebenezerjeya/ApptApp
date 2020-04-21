@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends CrudRepository<student_info, String>{
-
     @Query("select s from student_info s where student_id = ?1")
     List<student_info> findStudentById(String id);
 
