@@ -58,6 +58,10 @@ export class UserForm extends Component {
         return this.state.purpose !== '' && this.state.course !== '' && this.state.professor !== '' && this.state.campus!=='';
     }
 
+    handleChange3 = (field, value) => {
+        this.setState({[field]: value});
+    };
+
     //Handle fieldchange in terms of input box, changing when a new step advances or cancels
     //arrow function of react with event parameter
     handleChange = input => e => {
@@ -114,6 +118,7 @@ export class UserForm extends Component {
 
     getStartTimes = () => {
         // find prof based on the name, then set the professor_id and courses
+        console.log(this.state.professor);
         const prof = this.state.professorList.find(o => o.professor_name === this.state.professor);
         console.log(prof);
         if (prof != null) {
@@ -135,7 +140,7 @@ export class UserForm extends Component {
         fetch(`http://localhost:8080/professors`)
             .then(response => response.json())
             .then(data => {
-                this.setState({professorList: [{professor_id: "noSelect", professor_name: "Select Professor"}].concat(data)});
+                this.setState({professorList: data});
             });
 
         const link = "http://localhost:8080/student/"  + sessionStorage.getItem("id").toString();
@@ -191,6 +196,7 @@ export class UserForm extends Component {
                     < FormAppointmentDetails
                         nextStep = {this.nextStep}
                         prevStep = {this.prevStep}
+                        handleChange3 = {this.handleChange3}
                         handleChange = {this.handleChange}
                         getCoursesAndCampus = {this.getCoursesAndCampus}
                         validateForm = {this.validateForm()}
@@ -203,6 +209,7 @@ export class UserForm extends Component {
                         nextStep = {this.nextStep}
                         prevStep = {this.prevStep}
                         handleChange = {this.handleChange}
+                        handleChange3 = {this.handleChange3}
                         getStartTimes = {this.getStartTimes}
                         values = {values}
                     />
@@ -219,9 +226,7 @@ export class UserForm extends Component {
                 )
             case 5:
                 return <Success/>
-
             //no props cause it's an already confirmed page, unless we add features and stuff//
-
         }
     }
 }

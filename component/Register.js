@@ -84,6 +84,7 @@ export default function Register(props) {
                                 onChange={e => setFirst(e.target.value)}
                                 type="text"
                                 pattern=".{2,20}"
+                                required
                             />
                         </FormGroup>
                     </div>
@@ -97,6 +98,7 @@ export default function Register(props) {
                                 onChange={e => setLast(e.target.value)}
                                 type="text"
                                 pattern=".{2,20}"
+                                required
                             />
                         </FormGroup>
                     </div>
@@ -110,6 +112,7 @@ export default function Register(props) {
                                 value={id}
                                 onChange={e => setId(e.target.value)}
                                 pattern="[700]+.{8}"
+                                required
                             />
                         </FormGroup>
                     </div>
@@ -123,6 +126,7 @@ export default function Register(props) {
                                 onChange={e => setEmail(e.target.value)}
                                 type="email"
                                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                required
                             />
                         </FormGroup>
                     </div>
@@ -140,7 +144,7 @@ export default function Register(props) {
                                        - at least one number
                                        - at least one uppercase and lowercase letter
                                        - at least 8 characters"
-
+                                required
                             />
                         </FormGroup>
                     </div>
@@ -155,6 +159,7 @@ export default function Register(props) {
                                 onChange={e => setConfirmpass(e.target.value)}
                                 type="password"
                                 pattern={password}
+                                required
                             />
                         </FormGroup>
                         <div className="invalidInput"> </div>

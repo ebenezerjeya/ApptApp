@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
-//import TimePicker from 'react-bootstrap-time-picker';
+import "../css/AppointmentForm.css";
+import Select from "react-select";
 
 
 export class FormTimePicker extends Component {
-    //continue for event parameter to advance steps
+    state = {
+        selectedDate: { value: 'Date', label: 'Select Date'},
+        selectedTime: { value: 'Time', label: 'Select Time'},
+        availableList: [{professor_id: "noSelect", start_time: "Select Time"}],
+    };
 
     continue = e => {
         e.preventDefault();
+        const {handleChange3} = this.props;
+        handleChange3('date', this.state.selectedDate.value);
+        handleChange3('time', this.state.selectedTime.value);
+        handleChange3('availableList', this.state.availableList);
         this.props.nextStep();
     };
 
@@ -18,54 +27,88 @@ export class FormTimePicker extends Component {
         this.props.prevStep();
     };
 
-//notes - A common pattern in React is for a component to return multiple elements. 
-//Fragments let you group a list of children without adding extra nodes to the DOM.
+    handleDate = selectedDate => {
+        const date = selectedDate.target.value;
+        this.setState({selectedDate: {value: selectedDate.target.value, label: selectedDate.target.value}});
+
+        const {values} = this.props;
+        const prof = values.professorList.find(o => o.professor_name === values.professor);
+        if (prof != null) {
+            var professor_id = prof.professor_id;
+        }
+
+        const timesLink = "http://localhost:8080/available_timesbydate/" + professor_id + "/" + date;
+        console.log(timesLink);
+
+        fetch(timesLink)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                this.setState({availableList: data});
+            });
+    };
+
+    handleTime = selectedTime => {
+      this.setState({selectedTime});
+    };
+
+    populateTime(array) {
+        this.state.availableList.map((a_t) => {
+            array.push({value: a_t.start_time, label: a_t.start_time})
+        });
+
+        return array;
+    }
 
     render() {
-        //it's something like creating a const variable value to pull out 
-        //from values in Userform to use it here like a variable
-        const {values, handleChange, getStartTimes} = this.props;
+        const {values} = this.props;
+        const {selectedTime} = this.state;
 
-        return (
-            <div className="FormTimePicker">
-                <Navbar bg="dark" variant="dark">
-                    <Navbar.Brand href="#home">Appointmeet by UCM</Navbar.Brand>
-                    <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                    </Nav>
-                </Navbar>
-                <br/>
+        const timeOptions = [];
 
-                <Form>
-                    <Form.Group controlId="datepicker">
-                        <Form.Label > Pick Appointment date </Form.Label>
-                        <Form.Control type="date" placeholder="date"
-                                      onChange={handleChange('date')}
-                                      onInput={getStartTimes()} defaultValue={values.date}/>
-                    </Form.Group>
-                </Form>
-                <br/>
-                <label>Select Appointment Time:
+        this.populateTime(timeOptions);
+
+        return(
+
+            <div className="AppointmentForm">
+                <div className="WrapAppointmentForm">
+                    <Form>
+                        <Form.Group controlId="datepicker">
+                            <Form.Label > Pick Appointment date </Form.Label>
+                            <Form.Control type="date" placeholder="date"
+                                          onChange={this.handleDate}
+                                          defaultValue={values.date}
+                            />
+                        </Form.Group>
+                    </Form>
                     <br/>
-                    <select value={this.values} onInput={handleChange('time')}>
-                        {values.availableList.map((a_t) =>
-                            <option key={a_t.professor_id}>{a_t.start_time}</option>
-                        )}
-                    </select>
-                </label>
+                    <label>Select Appointment Time:</label>
+                    <br/>
+                    <Select
+                        value={selectedTime}
+                        defaultValue={timeOptions[0]}
+                        label="Single select"
+                        options={timeOptions}
+                        onChange={this.handleTime}
 
+                        theme={theme => ({
+                            ...theme,
+                            borderRadius: 0,
+                            colors: {
+                                ...theme.colors,
+                                primary25: 'lightgrey',
+                                primary: 'black',
+                            },
+                        })}
+                    />
 
-                <Button variant="primary" primary={false} type="submit" onChange="this.back" onClick={this.back}>
-                    Back
-                </Button>{' '}
-                <Button variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue}>
-                    Continue
-                </Button>
-
-
-
+                    <div className="nav">
+                        <Button variant="primary" primary={false} type="submit" onChange="this.back" onClick={this.back} className={"backBtn"}>Back</Button>
+                        <Button variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue} className={"continueBtn"}>Continue</Button>
+                    </div>
+                </div>
             </div>
-        );//react works when everytime textfield changes, its gonna fire off an event 
+        );
     };
 }
 

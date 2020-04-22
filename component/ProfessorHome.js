@@ -3,24 +3,10 @@ import { Button } from "react-bootstrap";
 import "../css/HomePage.css"
 
 export function logOut() {
-    const link = "http://localhost:8080/student/" + sessionStorage.getItem("id").toString() + "/loginAuth";
-
-    fetch(link, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: "logout",
-            password: "",
-        }),
-    });
-
     sessionStorage.setItem("isAuthenticated", "false");
 }
 
-export default function HomePage(props) {
+export default function ProfessorHome(props) {
     const [apptExist, setApptExist] = useState(false);
     const [appointments, setAppointments] = useState({
         appointments: [],
@@ -40,27 +26,9 @@ export default function HomePage(props) {
         professor_name: null,
     });
 
-    const [professorList, setProfessorList] = useState({
-        professorList: [],
-        professor_id: null,
-        professor_name: null,
-        professor_email: null,
-        warr_office: null,
-        mic_office: null,
-    });
-
     useEffect(() => {
         fetchData();
-        fetchProfessors();
     });
-
-    async function fetchProfessors() {
-        fetch(`http://localhost:8080/professors`)
-            .then(response => response.json())
-            .then(data => {
-                setProfessorList(data);
-            });
-    }
 
     async function fetchData() {
         const link = "http://localhost:8080/appointment/" + sessionStorage.getItem("id").toString();
@@ -75,13 +43,6 @@ export default function HomePage(props) {
                     setAppointments(data);
                 }
             })
-    }
-
-    function getProfName(email) {
-        for (let step = 0; step < professorList.length; step++) {
-            if (Object.values(professorList[step])[2] === email)
-                return Object.values(professorList[step])[1];
-        }
     }
 
     function deleteAppointment(id) {
@@ -120,8 +81,8 @@ export default function HomePage(props) {
                         <th>Date</th>
                         <th>Start Time</th>
                         <th>End Time</th>
-                        <th>Professor Email</th>
-                        <th>Professor Name</th>
+                        <th>Student Email</th>
+                        <th>Student Name</th>
                     </tr>
                     </thead>
 
@@ -135,9 +96,9 @@ export default function HomePage(props) {
                                 <td>{appt.appointment_date}</td>
                                 <td>{appt.start_time}</td>
                                 <td>{appt.end_time}</td>
-                                <td>{appt.professor_Email}</td>
-                                <td>{getProfName(appt.professor_Email)}</td>
-                                <td><Button type="button" onClick={() => {if (window.confirm('Are you sure you wish to delete this appointment?')) deleteAppointment(appt.appointment_id)}}>Cancel Appointment</Button></td>
+                                <td>{appt.student_Email}</td>
+                                <td>{appt.student_fname} {appt.student_lname}</td>
+                                <td><Button type="button" onClick={() => {if (window.confirm('Are you sure you wish to remove this appointment?')) deleteAppointment(appt.appointment_id)}}>Cancel Appointment</Button></td>
                             </tr>
                             </tbody>
                         )
@@ -155,27 +116,21 @@ export default function HomePage(props) {
                     </div>
                     <ul className="nav">
                         <li className="nav-item active">
-                            <a className="nav-link" href="/home">
+                            <a className="nav-link" href="/profHome">
                                 <i className="nc-icon nc-chart-pie-35"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li>
-                            <a className="nav-link" href="/home/profile">
-                                <i className="nc-icon nc-circle-09"></i>
-                                <p>User Profile</p>
+                            <a className="nav-link" href="/profHome/availableTimes">
+                                <i className="nc-icon nc-pin-3"></i>
+                                <p>Available Times</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="">
                                 <i className="nc-icon nc-pin-3"></i>
                                 <p>Maps</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="nav-link" href="">
-                                <i className="nc-icon nc-bell-55"></i>
-                                <p>Notifications</p>
                             </a>
                         </li>
                         <li>
@@ -200,7 +155,6 @@ export default function HomePage(props) {
                 <div className="mySchedule">
                     {apptExist ? showAppt() : noAppt()}
                 </div>
-                <Button className="apptBtn" type="button" onClick={()=> window.open("/form", "_blank")}>New Appointment</Button>
             </div>
         </div>
     )

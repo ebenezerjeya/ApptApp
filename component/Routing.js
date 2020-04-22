@@ -7,7 +7,9 @@ import ProfessorEditForm from "./ProfessorEditForm";
 import ProfessorAddForm from "./ProfessorAddForm";
 import UserForm from "./UserForm";
 import HomePage from "./HomePage";
+import ProfessorHome from "./ProfessorHome";
 import StudentProfile from "./StudentProfile";
+import ProfessorAvailableTimes from "./ProfessorAvailableTimes";
 import StudentEditForm from "./StudentEditForm";
 
 // create a privateRoute type to see if user is authenticated
@@ -31,14 +33,16 @@ class Routing extends Component {
                         <Route path="/login" exact component={Login}/>
                         <Route path="/register" exact component={Register} />
                         <PrivateRoute path="/home" exact component={HomePage} />
+                        <PrivateRoute path="/profHome" exact component={ProfessorHome} />
                         <PrivateRoute path="/home/profile" exact component={StudentProfile}/>
                         <PrivateRoute path="/home/profile/edit" exact component={StudentEditForm}/>
                         <PrivateRoute path="/form" exact component={UserForm}/>
                         <PrivateRoute path="/professors" exact component={ProfessorList}/>
                         <PrivateRoute path="/professors/new" component={ProfessorAddForm}/>
                         <PrivateRoute path="/professors/:id" component={ProfessorEditForm}/>
+                        <PrivateRoute path="/profHome/availableTimes" exact component={ProfessorAvailableTimes}/>
                         <Redirect from="/" to="/home"/>
-                </Switch>
+                    </Switch>
                 </>
             </Router>
         )

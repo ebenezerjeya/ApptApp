@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl } from "react-bootstrap";
 import { BrowserRouter as Router, Redirect, Switch, Route } from 'react-router-dom'
 import "../css/Login.css";
 import HomePage from "./HomePage";
+import ProfessorHome from "./ProfessorHome";
 
 export default function Login(props) {
     const [id, setId] = useState("");
@@ -10,6 +11,7 @@ export default function Login(props) {
     sessionStorage.setItem("id", id);
     const [password, setPassword] = useState("");
     const [auth, setAuth] = useState(false);
+    const [profAuth, setProfAuth] = useState(false);
     const [error, setError] = useState(false);
 
     // forcefully remount the page
@@ -20,24 +22,58 @@ export default function Login(props) {
         return id.length > 0 && password.length > 0;
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         const link = "http://localhost:8080/student/" + id + "/loginAuth";
 
-        fetch(link, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: id,
-                password: password,
-            }),
-        })
-            .then(data => {
-                forceUpdate();
+        var idKeyWord = id.substr(0,3);
+        if (idKeyWord === "700"){ //check for students account
+            fetch(link, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    password: password,
+                }),
+            })
+                .then(data => {
+                    forceUpdate();
+                });
+        }
+        else {
+            const linkProf = "http://localhost:8080/professors/" + id;
+            const res =  await fetch(linkProf, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
             });
+            res.json()
+                .then(data => {
+                    console.log(data);
+                    if(data === null){ //if the professor id is not found
+                        setError(true);
+                        setProfAuth(false);
+                    }
+                    else {
+                        if (password === "1234") { //if the professor id is true and the password is 1234
+                            //     setAuth(true); to route to the student home page if Auth is set to true
+                            setError(false);
+                            setProfAuth(true);
+                            sessionStorage.setItem("isAuthenticated", true);
+                        }
+                        else {
+                            setError(true);
+                            setProfAuth(false);
+                        }
+                    }
+                });
+        }
     }
 
     // constantly fetch Auth data from the backend
@@ -159,9 +195,10 @@ export default function Login(props) {
         <>
             <Router>
                 {error ? displayError() : null}
-                {auth ? <Redirect to="/home"/> : form()}
+                {auth ? <Redirect to="/home"/> : profAuth ? <Redirect to="/profHome"/>: form()}
                 <Switch>
                     <Route path="/home" exact component={HomePage}/>
+                    <Route path="/profHome" exact component={ProfessorHome}/>
                 </Switch>
             </Router>
         </>
