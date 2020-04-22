@@ -12,8 +12,8 @@ public class Appointment {
     @Id
     @GeneratedValue
     private int appointment_id;
-    private String Professor_Email;
-    private String Student_Email;
+    private String professor_Email;
+    private String student_Email;
     private String course_code;
     private String purpose;
     private String office;
@@ -34,19 +34,19 @@ public class Appointment {
     }
 
     public String getProfessor_Email() {
-        return Professor_Email;
+        return professor_Email;
     }
 
     public void setProfessor_Email(String professor_Email) {
-        this.Professor_Email = professor_Email;
+        this.professor_Email = professor_Email;
     }
 
     public String getStudent_Email() {
-        return Student_Email;
+        return student_Email;
     }
 
     public void setStudent_Email(String student_Email) {
-        this.Student_Email = student_Email;
+        this.student_Email = student_Email;
     }
 
     public String getCourse_code() {

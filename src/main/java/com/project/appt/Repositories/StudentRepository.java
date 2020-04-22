@@ -9,9 +9,8 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends CrudRepository<student_info, String>{
-
-    @Query("select s from student_info s where student_id = ?1 and student_password = ?2")
-    List<student_info> findStudentById(String id, String password);
+    @Query("select s from student_info s where student_id = ?1")
+    List<student_info> findStudentById(String id);
 
     @Query("select s1 from student_info s1 where student_id =?1")
     List<student_info> findDuplicateStudentID(String id);

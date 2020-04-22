@@ -5,12 +5,8 @@ import com.project.appt.Tables.available_times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,11 +24,18 @@ public class Available_timesController {
         return availableTimesRepository.findAll();
     }
 
-    @GetMapping("/available_times/{available_ID}")
+//    @GetMapping("/available_times/{available_ID}")
+//    public @ResponseBody
+//    Optional<available_times> getTime(@PathVariable Integer available_ID) {
+//        return availableTimesRepository.findById(available_ID);
+//    }
+
+    @GetMapping("/available_times/{id}")
     public @ResponseBody
-    Optional<available_times> getTime(@PathVariable Integer available_ID) {
-        return availableTimesRepository.findById(available_ID);
+    List<available_times> getDate(@PathVariable String id) {
+        return availableService.findavailable_timeByProfessorID(id);
     }
+
 
     @PostMapping("/available_times")
     public @ResponseBody void createTime(@RequestBody available_times available_ID) {
@@ -55,9 +58,5 @@ public class Available_timesController {
         Date convertedDate = Date.valueOf(date);
         //List<available_times> Available_times = availableService.findavailable_timesByDate(id, convertedDate);
         return availableService.findavailable_timesByDate(id, convertedDate);
-
     }
-
-    
-
 }

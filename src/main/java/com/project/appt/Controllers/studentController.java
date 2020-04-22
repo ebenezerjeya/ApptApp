@@ -1,5 +1,6 @@
 package com.project.appt.Controllers;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import com.project.appt.Authentication.Credentials;
 import com.project.appt.RepoInterfaces.ResponseAuthRepoInterface;
 import com.project.appt.RepoInterfaces.StudentRepoInterface;
@@ -83,6 +84,7 @@ public class studentController {
         if(student1.isEmpty()) {
             registerAuth.setAuth(true);
             registerAuth.setError(false);
+            student.setStudent_password(BCrypt.hashpw(student.getStudent_password(), BCrypt.gensalt(12)));
             studentRepository.save(student);
             responseAuthRepository.save(new response_auth(false, false, student.getStudent_id()));
         }
@@ -104,13 +106,16 @@ public class studentController {
                 responseAuthRepository.save(response.get(0));
             }
             else {
-                List<student_info> student= studentService.findStudentById(credentials.getId(), credentials.getPassword());
-                if (student.isEmpty() && !response.get(0).getError()) {
+                boolean matched = false;
+                List<student_info> student= studentService.findStudentById(credentials.getId());
+                if(!student.isEmpty())
+                    matched = BCrypt.checkpw(credentials.getPassword(), student.get(0).getStudent_password());
+                if (student.isEmpty() && !response.get(0).getError() || !matched) {
                     response.get(0).setError(true);
                     responseAuthRepository.save(response.get(0));
                 }
 
-                if (!student.isEmpty()) {
+                if (!student.isEmpty() && matched) {
                     response.get(0).setAuth(true);
                     response.get(0).setError(false);
                     responseAuthRepository.save(response.get(0));
@@ -121,7 +126,6 @@ public class studentController {
             errorType = 2;
         }
     }
-
     // update password
     @PutMapping("/student")
     public @ResponseBody void updateStudent(@RequestBody Credentials credentials) {
