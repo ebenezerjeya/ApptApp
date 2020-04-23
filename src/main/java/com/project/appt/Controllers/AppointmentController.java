@@ -4,15 +4,15 @@ import com.project.appt.RepoInterfaces.ProfessorRepoInterface;
 import com.project.appt.RepoInterfaces.StudentRepoInterface;
 import com.project.appt.Repositories.AvailableTimesRepository;
 import com.project.appt.Repositories.ProfessorRepository;
-import com.project.appt.Repositories.StudentRepository;
+import com.project.appt.Services.EmailServiceImpl;
 import com.project.appt.Tables.Appointment;
 import com.project.appt.Repositories.AppointmentRepository;
 import com.project.appt.Tables.Professor_Info;
-import com.project.appt.Tables.available_times;
+import com.project.appt.Tables.Available_times;
 import com.project.appt.Tables.student_info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,24 +64,33 @@ public class AppointmentController {
         return appointments[0];
     }
 
+    @PutMapping("/appointment/{id}")
+    public @ResponseBody void updateAppointment(@RequestBody Appointment appointment) {
+        appointmentRepository.save(appointment);
+    }
+
     @PostMapping("/appointment")
-    public @ResponseBody void createAppointment(@RequestBody Appointment appointment) {
+    public @ResponseBody void createAppointment(@RequestBody Appointment appointment) throws MessagingException {
         appointment.setAppointment_date(new java.sql.Date((appointment.getAppointment_date().getTime()+24*60*60*1000)));
         appointmentRepository.save(appointment);
-
+        appointmentRepository.findById(appointment.getAppointment_id());
         // change available times
         List<Professor_Info> prof = professorRepoInterface.findProfByEmail(appointment.getProfessor_Email());
         String prof_id = prof.get(0).getProfessor_id();
 
-        List<available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
-        available_times selected = time.get(0);
+        List<Available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
+        Available_times selected = time.get(0);
         selected.setAvailable(false);
         availableTimesRepository.save(selected);
-    }
 
-    @PutMapping("/appointment/{id}")
-    public @ResponseBody void updateAppointment(@RequestBody Appointment appointment) {
-        appointmentRepository.save(appointment);
+        EmailServiceImpl e = new EmailServiceImpl();
+        e.sendSimpleMessage(appointment.getProfessor_Email(), appointment.getStudent_Email(),
+                "[StudentAppointment] " + appointment.getPurpose(), "<h1>New appointment scheduled on " +
+                        appointment.getAppointment_date() + "</h1> <h2>Appointment Time: " + appointment.getStart_time() + "</h2>" +
+                         "<h2> Location: " + appointment.getOffice() + "</h2> <br> <p><i>Additional details: " +
+                        appointment.getAppointment_description() + "</i></p>" + " <br><h4>Appointment set by: " +
+                        appointment.getStudent_Email() + "</h4>");
+
     }
 
     @DeleteMapping("/appointment/{id}")
@@ -94,10 +103,21 @@ public class AppointmentController {
             List<Professor_Info> prof = professorRepoInterface.findProfByEmail(appointment.getProfessor_Email());
             String prof_id = prof.get(0).getProfessor_id();
 
-            List<available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
-            available_times selected = time.get(0);
+            List<Available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
+            Available_times selected = time.get(0);
             selected.setAvailable(true);
             appointmentRepository.deleteById(id);
+
+            EmailServiceImpl e = new EmailServiceImpl();
+            try {
+                e.sendSimpleMessage(appointment.getProfessor_Email(), appointment.getStudent_Email(),
+                        "[StudentAppointment Cancellation]", "<h1>Appointment cancelled on " +
+                                appointment.getAppointment_date() + "</h1> <h2>Time slot freed up: " + appointment.getStart_time() + "</h2>" +
+                                "<h2> Location: " + appointment.getOffice() + "</h2> <br> " + " <br><h4>Appointment cancelled by: " +
+                                appointment.getStudent_Email() + "</h4>");
+            } catch (MessagingException messagingException) {
+                messagingException.printStackTrace();
+            }
         });
     }
 }

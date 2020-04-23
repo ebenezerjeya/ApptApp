@@ -1,13 +1,12 @@
 package com.project.appt.Controllers;
 import com.project.appt.RepoInterfaces.AvailableTimesRepoInterface;
 import com.project.appt.Repositories.AvailableTimesRepository;
-import com.project.appt.Tables.available_times;
+import com.project.appt.Tables.Available_times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -20,7 +19,7 @@ public class Available_timesController {
     private AvailableTimesRepoInterface availableService;
 
     @GetMapping("/available_times")
-    public @ResponseBody Iterable<available_times> getAllTimes() {
+    public @ResponseBody Iterable<Available_times> getAllTimes() {
         return availableTimesRepository.findAll();
     }
 
@@ -32,18 +31,18 @@ public class Available_timesController {
 
     @GetMapping("/available_times/{id}")
     public @ResponseBody
-    List<available_times> getDate(@PathVariable String id) {
+    List<Available_times> getDate(@PathVariable String id) {
         return availableService.findavailable_timeByProfessorID(id);
     }
 
 
     @PostMapping("/available_times")
-    public @ResponseBody void createTime(@RequestBody available_times available_ID) {
+    public @ResponseBody void createTime(@RequestBody Available_times available_ID) {
         availableTimesRepository.save(available_ID);
     }
 
     @PutMapping("/available_times/{available_ID}")
-    public @ResponseBody void updateTime(@RequestBody available_times available_ID) {
+    public @ResponseBody void updateTime(@RequestBody Available_times available_ID) {
         availableTimesRepository.save(available_ID);
     }
 
@@ -53,7 +52,7 @@ public class Available_timesController {
     }
 
     @GetMapping("/available_timesbydate/{id}/{date}")
-    public  @ResponseBody Iterable<available_times> getAvailableTimesByDate(@PathVariable String id, @PathVariable String date){
+    public  @ResponseBody Iterable<Available_times> getAvailableTimesByDate(@PathVariable String id, @PathVariable String date){
 
         Date convertedDate = Date.valueOf(date);
         //List<available_times> Available_times = availableService.findavailable_timesByDate(id, convertedDate);
