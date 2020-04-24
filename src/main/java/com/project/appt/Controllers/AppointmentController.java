@@ -37,45 +37,44 @@ public class AppointmentController {
     @Autowired
     private ProfessorRepoInterface professorRepoInterface;
 
-    @GetMapping("/appointment")
+    @GetMapping("/appointment") //return all appointments
     public @ResponseBody Iterable<Appointment> getAllAppointment() {
         return appointmentRepository.findAll();
     }
 
-    @GetMapping("/appointment/{id}")
+    @GetMapping("/appointment/{id}") //return appointment based on student id or professor id
     public @ResponseBody
     List<Appointment> getAppointment(@PathVariable String id) {
-        List<student_info> student = studentService.findStudentById(id);
+        List<student_info> student = studentService.findStudentById(id); //find student by the student id
         final List<Appointment>[] appointments = new List[]{null};
 
 
         if(!student.isEmpty()) { //if the id is a student ID
             String email = student.get(0).getStudent_email();
-            appointments[0] = appointmentRepository.findAppointmentByStudentEmail(email);
+            appointments[0] = appointmentRepository.findAppointmentByStudentEmail(email); //retrieve the appointment by student email
 
         }else{//if the id is a professor ID
-            Optional<Professor_Info> professors = professorRepository.findById(id);
-            professors.ifPresent(prof -> {
+            Optional<Professor_Info> professors = professorRepository.findById(id); //find professor by the professor id
+            professors.ifPresent(prof -> { //if it's a valid professor id
                 String profEmail = prof.getProfessor_email();
-                appointments[0] = appointmentRepository.findAppointmentByProfessorEmail(profEmail);
+                appointments[0] = appointmentRepository.findAppointmentByProfessorEmail(profEmail); //retrieve the appointment by professor email
             });
 
         }
         return appointments[0];
     }
 
-    @PostMapping("/appointment")
+    @PostMapping("/appointment") //create appointment
     public @ResponseBody void createAppointment(@RequestBody Appointment appointment) {
-        appointment.setAppointment_date(new java.sql.Date((appointment.getAppointment_date().getTime()+24*60*60*1000)));
-        appointmentRepository.save(appointment);
+        appointment.setAppointment_date(new java.sql.Date((appointment.getAppointment_date().getTime()+24*60*60*1000))); //set the appointment date
+        appointmentRepository.save(appointment); //save the appointment object in the database
 
         // change available times
         List<Professor_Info> prof = professorRepoInterface.findProfByEmail(appointment.getProfessor_Email());
         String prof_id = prof.get(0).getProfessor_id();
-
         List<available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
         available_times selected = time.get(0);
-        selected.setAvailable(false);
+        selected.setAvailable(false); //set the available times to false for the specific professor
         availableTimesRepository.save(selected);
     }
 
@@ -84,20 +83,19 @@ public class AppointmentController {
         appointmentRepository.save(appointment);
     }
 
-    @DeleteMapping("/appointment/{id}")
+    @DeleteMapping("/appointment/{id}") //delete appointment
     public @ResponseBody void deleteAppointment(@PathVariable int id) {
-        Optional<Appointment> appt = appointmentRepository.findById(id);
+        Optional<Appointment> appt = appointmentRepository.findById(id); //find the appointment by the appointment id
 
-        appt.ifPresent(appointment -> {
+        appt.ifPresent(appointment -> { //if the appointment id is valid
 
             // change available times
             List<Professor_Info> prof = professorRepoInterface.findProfByEmail(appointment.getProfessor_Email());
             String prof_id = prof.get(0).getProfessor_id();
-
             List<available_times> time = availableTimesRepoInterface.findavailable_time(prof_id, appointment.getAppointment_date(), appointment.getStart_time());
             available_times selected = time.get(0);
-            selected.setAvailable(true);
-            appointmentRepository.deleteById(id);
+            selected.setAvailable(true); //set the available times to true for the specific professor
+            appointmentRepository.deleteById(id); //delete the appointment
         });
     }
 }

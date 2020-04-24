@@ -16,33 +16,33 @@ public class CourseController {
     @Autowired
     private CourseRepoInterface courseRepoInterface;
 
-    @GetMapping("/courses")
+    @GetMapping("/courses") //retrieve all courses
     public @ResponseBody Iterable<Course_List> getAllCourses() {
         return courseRepository.findAll();
     }
 
-    @GetMapping("/courses/{id}")
+    @GetMapping("/courses/{id}") //retrieve courses based on course id
     public @ResponseBody
     Optional<Course_List> getCourses(@PathVariable int id) {
         return courseRepository.findById(id);
     }
 
-    @GetMapping("/courses_prof/{professor_id}")
+    @GetMapping("/courses_prof/{professor_id}") //retrieve courses based on professor id
     public @ResponseBody Iterable<Course_List> getCoursesByProfessor(@PathVariable String professor_id) {
         return courseRepoInterface.findCourseByProfessor(professor_id);
     }
 
-    @PostMapping("/courses")
+    @PostMapping("/courses") //create courses
     public @ResponseBody void createCourses(@RequestBody Course_List course) {
         courseRepository.save(course);
     }
 
-    @PutMapping("/courses/{id}")
+    @PutMapping("/courses/{id}") //update courses
     public @ResponseBody void updateCourses(@RequestBody Course_List course) {
         courseRepository.save(course);
     }
 
-    @DeleteMapping("/courses/{id}")
+    @DeleteMapping("/courses/{id}") //delete courses
     public @ResponseBody void deleteCourses(@PathVariable int id) {
         courseRepository.deleteById(id);
     }
