@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState } from "react";
 import { Button, FormGroup, FormControl } from "react-bootstrap";
 import { BrowserRouter as Router, Redirect, Switch, Route } from 'react-router-dom'
-import "../css/Login.css";
 import HomePage from "./HomePage";
 import ProfessorHome from "./ProfessorHome";
+import "../css/Login.css";
 
-export default function Login(props) {
+export default function Login() {
     const [id, setId] = useState("");
     /*Get student_ID aka session variable*/
     sessionStorage.setItem("id", id);
@@ -61,8 +61,9 @@ export default function Login(props) {
                         setProfAuth(false);
                     }
                     else {
-                        if (password === "1234") { //if the professor id is true and the password is 1234
-                            //     setAuth(true); to route to the student home page if Auth is set to true
+                        if (password === "1234") {
+                            //if the professor id is true and the password is 1234
+                            //setAuth(true); to route to the student home page if Auth is set to true
                             setError(false);
                             setProfAuth(true);
                             sessionStorage.setItem("isAuthenticated", true);
@@ -123,7 +124,7 @@ export default function Login(props) {
                 </div>
             </header>
             <div className="Login">
-                <div class="d-md-flex flex-items-center gutter-md-spacious wrapIntroLogin">
+                <div className="d-md-flex flex-items-center gutter-md-spacious wrapIntroLogin">
                     <div className="col-md-7 text-center text-md-left intro">
                         <h1 className="introTitle"> Made by Students, for Students</h1>
                         <p> Easy online appointment scheduling application for students and professors </p>

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Form, FormControl} from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
-import "../css/AppointmentForm.css";
 import Select from "react-select";
-
+import "../css/AppointmentForm.css";
 
 export class FormTimePicker extends Component {
     state = {
@@ -15,10 +13,10 @@ export class FormTimePicker extends Component {
 
     continue = e => {
         e.preventDefault();
-        const {handleChange3} = this.props;
-        handleChange3('date', this.state.selectedDate.value);
-        handleChange3('time', this.state.selectedTime.value);
-        handleChange3('availableList', this.state.availableList);
+        const {handleChange2} = this.props;
+        handleChange2('date', this.state.selectedDate.value);
+        handleChange2('time', this.state.selectedTime.value);
+        handleChange2('availableList', this.state.availableList);
         this.props.nextStep();
     };
 
@@ -103,8 +101,8 @@ export class FormTimePicker extends Component {
                     />
 
                     <div className="nav">
-                        <Button variant="primary" primary={false} type="submit" onChange="this.back" onClick={this.back} className={"backBtn"}>Back</Button>
-                        <Button variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue} className={"continueBtn"}>Continue</Button>
+                        <Button variant="primary" primary={false} type="submit" onClick={this.back} className={"backBtn"}>Back</Button>
+                        <Button variant="primary" primary={false} type="submit" onClick={this.continue} className={"continueBtn"}>Continue</Button>
                     </div>
                 </div>
             </div>

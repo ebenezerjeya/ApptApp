@@ -1,16 +1,14 @@
 import React , { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import ProfessorList from "./ProfessorList";
 import Login from "./Login";
 import Register from "./Register";
-import ProfessorEditForm from "./ProfessorEditForm";
-import ProfessorAddForm from "./ProfessorAddForm";
-import UserForm from "./UserForm";
 import HomePage from "./HomePage";
 import ProfessorHome from "./ProfessorHome";
+import UserForm from "./UserForm";
 import StudentProfile from "./StudentProfile";
-import ProfessorAvailableTimes from "./ProfessorAvailableTimes";
 import StudentEditForm from "./StudentEditForm";
+import ProfessorAvailableTimes from "./ProfessorAvailableTimes";
+import ProfessorAvailableTimesEdit from "./ProfessorAvailableTimesEdit";
 
 // create a privateRoute type to see if user is authenticated
 // this line takes the component and ...rest as events
@@ -37,10 +35,8 @@ class Routing extends Component {
                         <PrivateRoute path="/home/profile" exact component={StudentProfile}/>
                         <PrivateRoute path="/home/profile/edit" exact component={StudentEditForm}/>
                         <PrivateRoute path="/form" exact component={UserForm}/>
-                        <PrivateRoute path="/professors" exact component={ProfessorList}/>
-                        <PrivateRoute path="/professors/new" component={ProfessorAddForm}/>
-                        <PrivateRoute path="/professors/:id" component={ProfessorEditForm}/>
                         <PrivateRoute path="/profHome/availableTimes" exact component={ProfessorAvailableTimes}/>
+                        <PrivateRoute path="/profHome/availableTimes/edit" exact component={ProfessorAvailableTimesEdit}/>
                         <Redirect from="/" to="/home"/>
                     </Switch>
                 </>

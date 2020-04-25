@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import { Button } from "react-bootstrap";
-import logout, {logOut} from "./HomePage";
+import { logOut } from "./HomePage";
 import "../css/HomePage.css";
 
 class StudentProfile extends Component {
@@ -17,7 +17,6 @@ class StudentProfile extends Component {
 
     componentDidMount() {
         const link = "http://localhost:8080/student/"  + sessionStorage.getItem("id").toString();
-        console.log(link);
         fetch(link)
             .then(res => res.json())
             .then(data => {this.setState(data)})
@@ -29,36 +28,36 @@ class StudentProfile extends Component {
                 <div className="sidebar position-block">
                     <div className="sidebar-wrapper">
                         <div className="logo">
-                            <a href="" className="simple-text">AppointMeet</a>
+                            <a className="simple-text">AppointMeet</a>
                         </div>
                         <ul className="nav">
-                            <li className="nav-item active">
+                            <li>
                                 <a className="nav-link" href="/home">
-                                    <i className="nc-icon nc-chart-pie-35"></i>
+                                    <i className="nc-icon nc-chart-pie-35"/>
                                     <p>Dashboard</p>
                                 </a>
                             </li>
-                            <li>
+                            <li className="nav-item active">
                                 <a className="nav-link" href="/home/profile">
-                                    <i className="nc-icon nc-circle-09"></i>
+                                    <i className="nc-icon nc-circle-09"/>
                                     <p>User Profile</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="">
-                                    <i className="nc-icon nc-pin-3"></i>
+                                    <i className="nc-icon nc-pin-3"/>
                                     <p>Maps</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="">
-                                    <i className="nc-icon nc-bell-55"></i>
+                                    <i className="nc-icon nc-bell-55"/>
                                     <p>Notifications</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="/" onClick={logOut}>
-                                    <i className="nc-icon nc-bell-55"></i>
+                                    <i className="nc-icon nc-bell-55"/>
                                     <p>Log Out</p>
                                 </a>
                             </li>
@@ -75,12 +74,14 @@ class StudentProfile extends Component {
                 </div>
                 <div className="position-block myBody">
                     <span className="sectionTitles"> Student Info </span>
-                    <p>
-                    <label>ID: {this.state.student_id}</label><br/>
-                    <label>Name: {this.state.student_fname} {this.state.student_lname}</label><br/>
-                    <label>Email: {this.state.student_email}</label><br/>
-                    </p>
-                    <Button variant="primary" href="/home/profile/edit">Change password</Button>
+                    <div className="mySchedule">
+                        <p>
+                            <label>ID: {this.state.student_id}</label><br/>
+                            <label>Name: {this.state.student_fname} {this.state.student_lname}</label><br/>
+                            <label>Email: {this.state.student_email}</label><br/>
+                        </p>
+                        <Button variant="info" href="/home/profile/edit">Change password</Button>
+                    </div>
                 </div>
             </div>
         )

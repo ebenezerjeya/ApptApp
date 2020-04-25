@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
-import Button from "react-bootstrap/Button";
-import { Navbar, Nav, NavItem, NavDropdown, Glyphicon } from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import "../css/AppointmentForm.css";
 
 export class Success extends Component {
-    continue = e => {
-        e.preventDefault();
-        this.props.nextStep();
-    };
-
-    back = e => {
-        e.preventDefault();
-        this.props.prevStep();
-    };
-
     render() {
         return (
             <div>
@@ -45,6 +31,5 @@ export class Success extends Component {
         )
     };
 }
-
 
 export default Success

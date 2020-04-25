@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "../css/HomePage.css"
 
@@ -6,7 +6,7 @@ export function logOut() {
     sessionStorage.setItem("isAuthenticated", "false");
 }
 
-export default function ProfessorHome(props) {
+export default function ProfessorHome() {
     const [apptExist, setApptExist] = useState(false);
     const [appointments, setAppointments] = useState({
         appointments: [],
@@ -117,25 +117,25 @@ export default function ProfessorHome(props) {
                     <ul className="nav">
                         <li className="nav-item active">
                             <a className="nav-link" href="/profHome">
-                                <i className="nc-icon nc-chart-pie-35"></i>
+                                <i className="nc-icon nc-chart-pie-35"/>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="/profHome/availableTimes">
-                                <i className="nc-icon nc-pin-3"></i>
+                                <i className="nc-icon nc-pin-3"/>
                                 <p>Available Times</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="">
-                                <i className="nc-icon nc-pin-3"></i>
+                                <i className="nc-icon nc-pin-3"/>
                                 <p>Maps</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="/" onClick={logOut}>
-                                <i className="nc-icon nc-bell-55"></i>
+                                <i className="nc-icon nc-bell-55"/>
                                 <p>Log Out</p>
                             </a>
                         </li>

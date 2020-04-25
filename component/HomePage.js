@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "../css/HomePage.css"
 
+// logout function
 export function logOut() {
     const link = "http://localhost:8080/student/" + sessionStorage.getItem("id").toString() + "/loginAuth";
 
@@ -20,7 +21,7 @@ export function logOut() {
     sessionStorage.setItem("isAuthenticated", "false");
 }
 
-export default function HomePage(props) {
+export default function HomePage() {
     const [apptExist, setApptExist] = useState(false);
     const [appointments, setAppointments] = useState({
         appointments: [],

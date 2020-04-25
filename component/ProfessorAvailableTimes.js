@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import "../css/HomePage.css"
+import "../css/HomePage.css";
 
 export function logOut() {
     sessionStorage.setItem("isAuthenticated", "false");
 }
 
-export default function ProfessorAvailableTimes(props) {
+export default function ProfessorAvailableTimes() {
     const [availableTimesExist, setAvailableTimesExist] = useState(false);
     const [availableTimes, setAvailableTimes] = useState({
         availableTimes: [],
@@ -18,7 +18,6 @@ export default function ProfessorAvailableTimes(props) {
         date: null,
         available: null,
         professor_ID: null,
-
     });
 
     useEffect(() => {
@@ -98,6 +97,7 @@ export default function ProfessorAvailableTimes(props) {
                         )
                     }
                 </table>
+                <Button type="button" href="/profHome/availableTimes/edit">Add New Time</Button>
             </p>
         </div>;
 
@@ -111,25 +111,25 @@ export default function ProfessorAvailableTimes(props) {
                     <ul className="nav">
                         <li>
                             <a className="nav-link" href="/profHome">
-                                <i className="nc-icon nc-chart-pie-35"></i>
+                                <i className="nc-icon nc-chart-pie-35"/>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li className="nav-item active">
                             <a className="nav-link" href="/profHome/availableTimes">
-                                <i className="nc-icon nc-pin-3"></i>
+                                <i className="nc-icon nc-pin-3"/>
                                 <p>Available Times</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="">
-                                <i className="nc-icon nc-pin-3"></i>
+                                <i className="nc-icon nc-pin-3"/>
                                 <p>Maps</p>
                             </a>
                         </li>
                         <li>
                             <a className="nav-link" href="/" onClick={logOut}>
-                                <i className="nc-icon nc-bell-55"></i>
+                                <i className="nc-icon nc-bell-55"/>
                                 <p>Log Out</p>
                             </a>
                         </li>

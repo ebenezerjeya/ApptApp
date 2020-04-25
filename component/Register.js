@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Redirect, Switch, Route } from 'react-router-d
 import Login from "./Login";
 import "../css/Register.css";
 
-export default function Register(props) {
+export default function Register() {
     const [id, setId] = useState("");
     const [firstName, setFirst] = useState("");
     const [lastName, setLast] = useState("");

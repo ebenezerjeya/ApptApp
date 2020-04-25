@@ -30,10 +30,8 @@ class StudentEditForm extends Component {
         this.setState({item});
     }
 
-    handleSubmit(event) {
+    handleSubmit() {
         const {item} = this.state;
-
-        // add code here in future
 
         fetch(`http://localhost:8080/student`, {
             method: 'PUT',
@@ -51,7 +49,8 @@ class StudentEditForm extends Component {
     }
 
     validateForm() {
-        return this.state.student_password === this.state.confirm_password;
+        return this.state.student_password === this.state.confirm_password &&
+            this.state.student_password != null && this.state.confirm_password != null;
     }
 
     render() {
@@ -65,33 +64,33 @@ class StudentEditForm extends Component {
                             <a href="" className="simple-text">AppointMeet</a>
                         </div>
                         <ul className="nav">
-                            <li className="nav-item active">
+                            <li>
                                 <a className="nav-link" href="/home">
-                                    <i className="nc-icon nc-chart-pie-35"></i>
+                                    <i className="nc-icon nc-chart-pie-35"/>
                                     <p>Dashboard</p>
                                 </a>
                             </li>
-                            <li>
+                            <li className="nav-item active">
                                 <a className="nav-link" href="/home/profile">
-                                    <i className="nc-icon nc-circle-09"></i>
+                                    <i className="nc-icon nc-circle-09"/>
                                     <p>User Profile</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="">
-                                    <i className="nc-icon nc-pin-3"></i>
+                                    <i className="nc-icon nc-pin-3"/>
                                     <p>Maps</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="">
-                                    <i className="nc-icon nc-bell-55"></i>
+                                    <i className="nc-icon nc-bell-55"/>
                                     <p>Notifications</p>
                                 </a>
                             </li>
                             <li>
                                 <a className="nav-link" href="/" onClick={logOut}>
-                                    <i className="nc-icon nc-bell-55"></i>
+                                    <i className="nc-icon nc-bell-55"/>
                                     <p>Log Out</p>
                                 </a>
                             </li>
@@ -107,34 +106,36 @@ class StudentEditForm extends Component {
                     </div>
                 </div>
                 <div className="position-block myBody">
-                    <Container>
-                        <span className="sectionTitles"> Change Password </span>
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup>
-                                <label>New Password: </label>
-                                <FormControl type="password" name="student_password"
-                                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                             value={item.student_password || ''}
-                                             onChange={this.handleChange}
-                                             title="Password must contain:
-                                                - at least one number
-                                                - at least one uppercase and lowercase letter
-                                                - at least 8 characters"
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <label>Confirm Password :</label>
-                                <FormControl type="password" name="confirm_password"
-                                             value={item.confirm_password || ''}
-                                             onChange={this.handleChange}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Button type="submit" disabled={!this.validateForm}>Save</Button>
-                                <Button href="/home/profile">Cancel</Button>
-                            </FormGroup>
-                        </Form>
-                    </Container>
+                    <span className="sectionTitles"> Change Password </span>
+                    <div className="mySchedule">
+                        <Container>
+                            <Form onSubmit={this.handleSubmit}>
+                                <FormGroup>
+                                    <label>New Password: </label>
+                                    <FormControl type="password" name="student_password"
+                                                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                 value={item.student_password || ''}
+                                                 onChange={this.handleChange}
+                                                 title="Password must contain:
+                                                    - at least one number
+                                                    - at least one uppercase and lowercase letter
+                                                    - at least 8 characters"
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <label>Confirm Password :</label>
+                                    <FormControl type="password" name="confirm_password"
+                                                 value={item.confirm_password || ''}
+                                                 onChange={this.handleChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Button variant="info" type="submit" disabled={!this.validateForm}>Save</Button>{'  '}
+                                    <Button variant="info" href="/home/profile">Cancel</Button>
+                                </FormGroup>
+                            </Form>
+                        </Container>
+                    </div>
                 </div>
             </div>
 

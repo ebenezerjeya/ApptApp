@@ -1,16 +1,10 @@
 import React, { Component} from 'react';
-//material-ui theme provider wrapper
-import { Form, FormControl} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Navbar, Nav} from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
-import "../css/AppointmentForm.css";
-import CardDeck from "react-bootstrap/CardDeck";
 import CardGroup from "react-bootstrap/CardGroup";
-
+import "../css/AppointmentForm.css";
 
 export class Confirm extends Component {
-    //continue for event parameter to advance steps
     state = {
         professor_Email: '',
         student_Email: '',
@@ -26,27 +20,14 @@ export class Confirm extends Component {
         appointment_date:''
     };
 
-    handleSubmit() {
-        fetch(`http://localhost:8080/appointment`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.state),
-        });
-        console.log(this.state); //the state is not updated
-        //update the available variable to FALSE in available times table
-    }
-
+    // continue is called so nextStep moves to the next step(page)
     continue = e => {
         e.preventDefault();
-        // Process Form - process it with backend and send data with rest.api with backend here i think//
-        // A method here or something maybe idk //
         this.handleSubmit(this.props.values);
         this.props.nextStep();
     };
 
+    // back is called so prevStep moves to the previous step(page)
     back = e => {
         e.preventDefault();
         this.props.prevStep();
@@ -56,13 +37,13 @@ export class Confirm extends Component {
         e.preventDefault();
         this.props.backToFirstStep();
     };
+
     componentDidMount() {
-        const {
-            values: {
+        // obtain values from props
+        const { values: {
                 firstName,
                 lastName,
                 email,
-                studentID,
                 purpose,
                 professorList,
                 professor,
@@ -74,8 +55,11 @@ export class Confirm extends Component {
                 availableList
             }
         } = this.props;
+
+        // string.split to get course_code
         var course_codeTemp  = (course).split(" ");
 
+        // find professor to set email and office number
         var prof = professorList.find(o => o.professor_name === professor);
         if (prof != null) {
             var prof_email = prof.professor_email;
@@ -89,6 +73,7 @@ export class Confirm extends Component {
             prof_office = prof.mic_office;
         }
 
+        // finding end time based on the designated start time
         var available = availableList.find(o => o.start_time === time);
         if (available != null) {
             var end_time = available.end_time;
@@ -110,23 +95,31 @@ export class Confirm extends Component {
         });
     }
 
+    handleSubmit() {
+        fetch(`http://localhost:8080/appointment`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state),
+        });
+    }
+
 
     render() {
-        const {
-            values: {
+        const { values: {
                 firstName,
                 lastName,
                 email,
                 studentID,
                 purpose,
-                professorList,
                 professor,
                 course,
                 campus,
                 description,
                 date,
                 time,
-                availableList
             }
         } = this.props;
 
@@ -208,8 +201,8 @@ export class Confirm extends Component {
                         </Card>
 
                         <div className={"nav"}>
-                            <Button className={"backBtn"} variant="primary" primary={false} type="submit" onChange="this.back" onClick={this.back}>Back</Button>{' '}
-                            <Button className={"continueBtn"} variant="primary" primary={false} type="submit" onChange="this.continue" onClick={this.continue}>Continue</Button>
+                            <Button className={"backBtn"} variant="primary" primary={false} type="submit" onClick={this.back}>Back</Button>{' '}
+                            <Button className={"continueBtn"} variant="primary" primary={false} type="submit" onClick={this.continue}>Continue</Button>
                         </div>
                     </div>
                 </div>
