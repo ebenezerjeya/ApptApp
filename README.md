@@ -1,5 +1,6 @@
 # ApptApp
 
+## Introduction
  This is an appointment app to allow professors and students to meet and schedule appointments more conveniently.  
  Tools used in this project include: Spring MVC, React.js, MYSQL, REST, HTML and CSS
  
