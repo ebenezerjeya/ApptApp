@@ -49,14 +49,16 @@ ON DELETE CASCADE
 
 
 CREATE TABLE Available_times(
-        location varchar(8) NOT NULL,
+    location varchar(8) NOT NULL,
     day varchar(9) NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     date DATE NOT NULL,
     available BOOLEAN NOT NULL,
     professor_ID varchar(20) NOT NULL,
+    available_ID int auto_increment,
     FOREIGN KEY (professor_ID) REFERENCES professor_info(professor_ID)ON DELETE CASCADE,
+    primary key (available_ID),
 
 CONSTRAINT mustStartOnTHIRTYMinuteBoundary CHECK (
         EXTRACT(MINUTE FROM start_time) % 30 = 0
@@ -79,7 +81,7 @@ CONSTRAINT mustStartOnTHIRTYMinuteBoundary CHECK (
 );
 
 INSERT INTO AVAILTIMES TABLE FOR PROFS
-INSERT INTO Available_times VALUES (“THE LOCATION”, WEEKDAY('2020-02-07'),”09:30”, “10:00”, '2020-02-07', “true/false”, “prof id”);
+INSERT INTO Available_times (location,`day`,start_time,end_time,`date`,available,professor_ID) VALUES ("WCM118", "Wednesday","10:30", "11:00", '2020-07-08', "1", "grebe");
 Make switch() statement on JS end to display the days based on the WEEKDAY return value:
 WEEKDAY(): 0 - Monday, 1-Tuesday, 2-Wednesday, …. 6-Sunday
 
